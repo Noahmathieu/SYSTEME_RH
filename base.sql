@@ -4,11 +4,12 @@ CREATE TABLE employes(
     prenom TEXT NOT NULL,
     email TEXT NOT NULL UNIQUE,
     password TEXT NOT NULL,
-    role TEXT NOT NULL,
+    id_role INTEGER NOT NULL,
     id_departement INTEGER,
     date_embauche DATE NOT NULL,
     actif BOOLEAN NOT NULL DEFAULT 1,
-    FOREIGN KEY (id_departement) REFERENCES departements(id)
+    FOREIGN KEY (id_departement) REFERENCES departements(id),
+    FOREIGN KEY (id_role) REFERENCES roles(id)
 );
 
 CREATE TABLE departements(
@@ -51,6 +52,16 @@ CREATE TABLE conges(
     FOREIGN KEY (id_type_conge) REFERENCES types_conges(id)
 );
 
+CREATE TABLE roles(
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    nom TEXT NOT NULL UNIQUE
+);
+
+INSERT INTO roles (nom) VALUES
+('admin'),
+('rh'),
+('employe');
+
 INSERT INTO departements (nom, description) VALUES
 ('Ressources Humaines', 'Gestion du personnel et des congés'),
 ('Informatique', 'Développement et maintenance des systèmes informatiques'),
@@ -60,3 +71,4 @@ INSERT INTO employes (nom, prenom, email, password, role, id_departement, date_e
 ('Dupont', 'Jean', 'jean.dupont@entreprise.com', 'password123', 'employe', 1, '2020-01-01'),
 ('Martin', 'Sophie', 'sophie.martin@entreprise.com', 'password456', 'employe', 2, '2020-01-01'),
 ('Durand', 'Pierre', 'pierre.durand@entreprise.com', 'password789', 'employe', 3, '2020-01-01');
+
