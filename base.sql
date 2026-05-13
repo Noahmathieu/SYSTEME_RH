@@ -47,9 +47,10 @@ CREATE TABLE conges(
     statut TEXT NOT NULL CHECK(statut IN ('en_attente', 'approuve', 'refuse','annule')) DEFAULT 'en_attente',
     commentaire_rh TEXT,
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-    traite_par TEXT,
+    traite_par INTEGER,
     FOREIGN KEY (id_employe) REFERENCES employes(id),
-    FOREIGN KEY (id_type_conge) REFERENCES types_conges(id)
+    FOREIGN KEY (id_type_conge) REFERENCES types_conges(id),
+    FOREIGN KEY (traite_par) REFERENCES employes(id)
 );
 
 CREATE TABLE roles(
@@ -72,3 +73,7 @@ INSERT INTO employes (nom, prenom, email, password, role, id_departement, date_e
 ('Martin', 'Sophie', 'sophie.martin@entreprise.com', 'password456', 'employe', 2, '2020-01-01'),
 ('Durand', 'Pierre', 'pierre.durand@entreprise.com', 'password789', 'employe', 3, '2020-01-01');
 
+INSERT INTO types_conges (libelle, jours_annuels, deductible) VALUES
+('Congé payé', 25, 1),
+('Congé maladie', 10, 0),
+('Congé maternité', 90, 0);
