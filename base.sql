@@ -1,0 +1,52 @@
+CREATE TABLE employes(
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    nom TEXT NOT NULL,
+    prenom TEXT NOT NULL,
+    email TEXT NOT NULL UNIQUE,
+    password TEXT NOT NULL,
+    role TEXT NOT NULL,
+    id_departement INTEGER,
+    date_embauche DATE NOT NULL,
+    actif BOOLEAN NOT NULL DEFAULT 1,
+    FOREIGN KEY (id_departement) REFERENCES departements(id)
+);
+
+CREATE TABLE departements(
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    nom TEXT NOT NULL,
+    description TEXT
+);
+
+CREATE TABLE types_conges(
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    libelle TEXT NOT NULL UNIQUE,
+    jours_annuels INTEGER NOT NULL,
+    deductible BOOLEAN NOT NULL DEFAULT 1
+);
+
+CREATE TABLE soldes(
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    id_employe INTEGER NOT NULL,
+    id_type_conge INTEGER NOT NULL,
+    annee INTEGER NOT NULL,
+    jours_attribues INTEGER NOT NULL,
+    jours_pris INTEGER NOT NULL DEFAULT 0,
+    FOREIGN KEY (id_employe) REFERENCES employes(id),
+    FOREIGN KEY (id_type_conge) REFERENCES types_conges(id)
+);
+
+CREATE TABLE conges(
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    id_employe INTEGER NOT NULL,
+    id_type_conge INTEGER NOT NULL,
+    date_debut DATE NOT NULL,
+    date_fin DATE NOT NULL,
+    nb_jours INTEGER NOT NULL,
+    motif TEXT,
+    statut TEXT NOT NULL CHECK(statut IN ('en_attente', 'approuve', 'refuse','annule')) DEFAULT 'en_attente',
+    commentaire_rh TEXT,
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    traite_par TEXT,
+    FOREIGN KEY (id_employe) REFERENCES employes(id),
+    FOREIGN KEY (id_type_conge) REFERENCES types_conges(id)
+);
