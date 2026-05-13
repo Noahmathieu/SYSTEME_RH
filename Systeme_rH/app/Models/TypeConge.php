@@ -2,7 +2,7 @@
 namespace App\Models;
 use CodeIgniter\Model;
 
-class TypeCongeModel extends Model
+class TypeConge extends Model
 {
     protected $table = 'types_conges';
     protected $primaryKey = 'id';

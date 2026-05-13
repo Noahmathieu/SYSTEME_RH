@@ -6,8 +6,8 @@ class EmployeModel extends Model
 {
     protected $table = 'employes';
     protected $primaryKey = 'id';
-    protected $allowedFields = ['nom', 'prenom', 'email', 'id_role', 'id_departement', 'date_embauche', 'actif'];
-    protected $useTimestamps = true;
-    protected $createdField = 'created_at';
-    protected $updatedField = 'updated_at';
+    protected $allowedFields = ['nom', 'prenom', 'email', 'password', 'id_role', 'id_departement', 'date_embauche', 'actif'];
+    protected $useTimestamps = false;
+
+
 }

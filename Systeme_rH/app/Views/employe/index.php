@@ -1,6 +1,19 @@
 <?= $this->extend('layouts/base') ?>
 
 <?= $this->section('content') ?>
+<?php
+$statutClasses = [
+  'en_attente' => 's-attente',
+  'approuve' => 's-approuvee',
+  'refuse' => 's-refusee',
+  'annule' => 's-annulee',
+];
+$flashSuccess = session()->getFlashdata('success');
+$flashError = session()->getFlashdata('error');
+$flashSuccess = is_string($flashSuccess) ? $flashSuccess : null;
+$flashError = is_string($flashError) ? $flashError : null;
+$demandes = $demandes ?? [];
+?>
 <div class="app-wrap">
 
   <?= $this->include('partials/sidebar_employe') ?>
@@ -17,6 +30,18 @@
     </div>
 
     <div class="content">
+      <?php if ($flashSuccess): ?>
+      <div class="flash flash-success">
+        <i class="bi bi-check-circle-fill"></i>
+        <?= esc($flashSuccess) ?>
+      </div>
+      <?php endif; ?>
+      <?php if ($flashError): ?>
+      <div class="flash flash-error">
+        <i class="bi bi-exclamation-circle-fill"></i>
+        <?= esc($flashError) ?>
+      </div>
+      <?php endif; ?>
       <div class="data-card">
         <div class="data-card-head">
           <h3>Toutes mes demandes</h3>
@@ -35,51 +60,37 @@
             <tr><th>Type</th><th>Début</th><th>Fin</th><th>Durée</th><th>Statut</th><th>Commentaire RH</th><th>Action</th></tr>
           </thead>
           <tbody>
-            <tr>
-              <td><span class="type-badge t-annuel">Annuel</span></td>
-              <td class="td-muted">23 juin 2025</td>
-              <td class="td-muted">27 juin 2025</td>
-              <td class="td-mono">5 j</td>
-              <td><span class="statut s-attente">en attente</span></td>
-              <td class="td-muted" style="font-size:.78rem">—</td>
-              <td><button class="btn-sm btn-cancel"><i class="bi bi-x"></i> Annuler</button></td>
-            </tr>
-            <tr>
-              <td><span class="type-badge t-maladie">Maladie</span></td>
-              <td class="td-muted">2 juin 2025</td>
-              <td class="td-muted">3 juin 2025</td>
-              <td class="td-mono">2 j</td>
-              <td><span class="statut s-approuvee">approuvée</span></td>
-              <td style="font-size:.78rem;color:var(--success)"><i class="bi bi-check-circle"></i> Validé</td>
-              <td><span class="td-muted" style="font-size:.75rem">—</span></td>
-            </tr>
-            <tr>
-              <td><span class="type-badge t-annuel">Annuel</span></td>
-              <td class="td-muted">12 mai 2025</td>
-              <td class="td-muted">16 mai 2025</td>
-              <td class="td-mono">5 j</td>
-              <td><span class="statut s-approuvee">approuvée</span></td>
-              <td style="font-size:.78rem;color:var(--success)"><i class="bi bi-check-circle"></i> OK</td>
-              <td><span class="td-muted" style="font-size:.75rem">—</span></td>
-            </tr>
-            <tr>
-              <td><span class="type-badge t-special">Spécial</span></td>
-              <td class="td-muted">5 avr. 2025</td>
-              <td class="td-muted">5 avr. 2025</td>
-              <td class="td-mono">1 j</td>
-              <td><span class="statut s-refusee">refusée</span></td>
-              <td style="font-size:.78rem;color:var(--danger)">Chevauchement détecté</td>
-              <td><span class="td-muted" style="font-size:.75rem">—</span></td>
-            </tr>
-            <tr>
-              <td><span class="type-badge t-sans-solde">Sans solde</span></td>
-              <td class="td-muted">10 mars 2025</td>
-              <td class="td-muted">12 mars 2025</td>
-              <td class="td-mono">3 j</td>
-              <td><span class="statut s-annulee">annulée</span></td>
-              <td class="td-muted" style="font-size:.78rem">Annulé par l'employé</td>
-              <td><span class="td-muted" style="font-size:.75rem">—</span></td>
-            </tr>
+            <?php if (!empty($demandes)): ?>
+              <?php foreach ($demandes as $demande): ?>
+                <?php $statut = $demande['statut'] ?? 'en_attente'; ?>
+                <tr>
+                  <td><span class="type-badge"><?= esc((string) ($demande['type_conge'] ?? 'Type')) ?></span></td>
+                  <td class="td-muted"><?= esc((string) ($demande['date_debut'] ?? '')) ?></td>
+                  <td class="td-muted"><?= esc((string) ($demande['date_fin'] ?? '')) ?></td>
+                  <td class="td-mono"><?= esc((string) ($demande['nb_jours'] ?? 0)) ?> j</td>
+                  <td><span class="statut <?= esc((string) ($statutClasses[$statut] ?? 's-attente')) ?>"><?= esc((string) $statut) ?></span></td>
+                  <td class="td-muted" style="font-size:.78rem"><?= esc((string) ($demande['commentaire_rh'] ?? '—')) ?></td>
+                  <td>
+                    <?php if ($statut === 'en_attente'): ?>
+                      <form method="post" action="<?= base_url('employe/conges/' . $demande['id'] . '/cancel') ?>" style="display:inline">
+                        <button class="btn-sm btn-cancel" type="submit"><i class="bi bi-x"></i> Annuler</button>
+                      </form>
+                    <?php else: ?>
+                      <span class="td-muted" style="font-size:.75rem">—</span>
+                    <?php endif; ?>
+                  </td>
+                </tr>
+              <?php endforeach; ?>
+            <?php else: ?>
+              <tr>
+                <td colspan="7">
+                  <div class="empty">
+                    <i class="bi bi-calendar3"></i>
+                    <p>Aucune demande pour le moment.</p>
+                  </div>
+                </td>
+              </tr>
+            <?php endif; ?>
           </tbody>
         </table>
       </div>

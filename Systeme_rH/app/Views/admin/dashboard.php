@@ -1,6 +1,10 @@
 <?= $this->extend('layouts/base') ?>
 
 <?= $this->section('content') ?>
+<?php
+$flashSuccess = session()->getFlashdata('success');
+$flashError = session()->getFlashdata('error');
+?>
 <div class="app-wrap">
 
   <?= $this->include('partials/sidebar_admin') ?>
@@ -12,39 +16,51 @@
         <div class="topbar-breadcrumb">Administration</div>
       </div>
       <div class="topbar-actions">
-        <a href="<?= base_url('admin/employes/create') ?>" class="btn-forest" style="padding:7px 14px;font-size:.82rem"><i class="bi bi-person-plus"></i> Ajouter un employé</a>
+        <a href="<?= base_url('admin/employes') ?>" class="btn-forest" style="padding:7px 14px;font-size:.82rem"><i class="bi bi-person-plus"></i> Ajouter un employé</a>
       </div>
     </div>
 
     <div class="content">
+      <?php if ($flashSuccess): ?>
+      <div class="flash flash-success">
+        <i class="bi bi-check-circle-fill"></i>
+        <?= esc($flashSuccess) ?>
+      </div>
+      <?php endif; ?>
+      <?php if ($flashError): ?>
+      <div class="flash flash-error">
+        <i class="bi bi-exclamation-circle-fill"></i>
+        <?= esc($flashError) ?>
+      </div>
+      <?php endif; ?>
 
       <!-- Métriques admin -->
       <div class="metrics">
         <div class="metric">
           <div class="metric-top"><div class="metric-icon mi-forest"><i class="bi bi-people"></i></div></div>
-          <div class="metric-val">24</div>
+          <div class="metric-val"><?= esc($metrics['employesActifs'] ?? 0) ?></div>
           <div class="metric-label">Employés actifs</div>
           <div class="metric-sub up"><i class="bi bi-arrow-up-short"></i> +2 ce mois</div>
         </div>
         <div class="metric">
           <div class="metric-top"><div class="metric-icon mi-amber"><i class="bi bi-hourglass-split"></i></div></div>
-          <div class="metric-val">4</div>
+          <div class="metric-val"><?= esc($metrics['demandesEnAttente'] ?? 0) ?></div>
           <div class="metric-label">Demandes en attente</div>
         </div>
         <div class="metric">
           <div class="metric-top"><div class="metric-icon mi-green"><i class="bi bi-calendar-check"></i></div></div>
-          <div class="metric-val">31</div>
+          <div class="metric-val"><?= esc($metrics['demandesApprouvees'] ?? 0) ?></div>
           <div class="metric-label">Approuvées ce mois</div>
           <div class="metric-sub up"><i class="bi bi-arrow-up-short"></i> +6 vs mois dernier</div>
         </div>
         <div class="metric">
           <div class="metric-top"><div class="metric-icon mi-blue"><i class="bi bi-building"></i></div></div>
-          <div class="metric-val">4</div>
+          <div class="metric-val"><?= esc($metrics['departements'] ?? 0) ?></div>
           <div class="metric-label">Départements</div>
         </div>
         <div class="metric">
           <div class="metric-top"><div class="metric-icon mi-red"><i class="bi bi-person-slash"></i></div></div>
-          <div class="metric-val">3</div>
+          <div class="metric-val"><?= esc($metrics['absents'] ?? 0) ?></div>
           <div class="metric-label">Absents aujourd'hui</div>
         </div>
       </div>
@@ -62,24 +78,40 @@
               <tr><th>Employé</th><th>Type</th><th>Durée</th><th>Statut</th></tr>
             </thead>
             <tbody>
-              <tr>
-                <td><div style="display:flex;align-items:center;gap:7px"><div class="avatar av-green" style="width:28px;height:28px;font-size:.62rem">SR</div><span class="td-name" style="font-size:.84rem">Soa Rakoto</span></div></td>
-                <td><span class="type-badge t-annuel">Annuel</span></td>
-                <td class="td-mono">5 j</td>
-                <td><span class="statut s-attente">en attente</span></td>
-              </tr>
-              <tr>
-                <td><div style="display:flex;align-items:center;gap:7px"><div class="avatar av-amber" style="width:28px;height:28px;font-size:.62rem">TF</div><span class="td-name" style="font-size:.84rem">Tsiry Fidy</span></div></td>
-                <td><span class="type-badge t-maladie">Maladie</span></td>
-                <td class="td-mono">2 j</td>
-                <td><span class="statut s-attente">en attente</span></td>
-              </tr>
-              <tr>
-                <td><div style="display:flex;align-items:center;gap:7px"><div class="avatar av-blue" style="width:28px;height:28px;font-size:.62rem">HA</div><span class="td-name" style="font-size:.84rem">Haja Andria</span></div></td>
-                <td><span class="type-badge t-annuel">Annuel</span></td>
-                <td class="td-mono">5 j</td>
-                <td><span class="statut s-approuvee">approuvée</span></td>
-              </tr>
+              <?php if (!empty($recentDemandes)): ?>
+                <?php foreach ($recentDemandes as $demande): ?>
+                  <?php
+                    $statut = $demande['statut'] ?? 'en_attente';
+                    $statutClass = [
+                      'en_attente' => 's-attente',
+                      'approuve' => 's-approuvee',
+                      'refuse' => 's-refusee',
+                      'annule' => 's-annulee',
+                    ][$statut] ?? 's-attente';
+                    $initials = strtoupper(substr($demande['prenom'] ?? 'X', 0, 1) . substr($demande['nom'] ?? 'X', 0, 1));
+                  ?>
+                  <tr>
+                    <td>
+                      <div style="display:flex;align-items:center;gap:7px">
+                        <div class="avatar av-green" style="width:28px;height:28px;font-size:.62rem"><?= esc($initials) ?></div>
+                        <span class="td-name" style="font-size:.84rem"><?= esc(trim(($demande['prenom'] ?? '') . ' ' . ($demande['nom'] ?? ''))) ?></span>
+                      </div>
+                    </td>
+                    <td><span class="type-badge"><?= esc($demande['type_conge'] ?? 'Type') ?></span></td>
+                    <td class="td-mono"><?= esc($demande['nb_jours'] ?? 0) ?> j</td>
+                    <td><span class="statut <?= esc($statutClass) ?>"><?= esc($statut) ?></span></td>
+                  </tr>
+                <?php endforeach; ?>
+              <?php else: ?>
+                <tr>
+                  <td colspan="4">
+                    <div class="empty">
+                      <i class="bi bi-inbox"></i>
+                      <p>Aucune demande recente.</p>
+                    </div>
+                  </td>
+                </tr>
+              <?php endif; ?>
             </tbody>
           </table>
         </div>

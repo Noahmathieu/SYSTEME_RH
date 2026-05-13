@@ -1,6 +1,20 @@
 <?= $this->extend('layouts/base') ?>
 
 <?= $this->section('content') ?>
+<?php
+$statutClasses = [
+  'en_attente' => 's-attente',
+  'approuve' => 's-approuvee',
+  'refuse' => 's-refusee',
+  'annule' => 's-annulee',
+];
+$flashSuccess = session()->getFlashdata('success');
+$flashError = session()->getFlashdata('error');
+$flashSuccess = is_string($flashSuccess) ? $flashSuccess : null;
+$flashError = is_string($flashError) ? $flashError : null;
+$stats = $stats ?? [];
+$demandes = $demandes ?? [];
+?>
 <div class="app-wrap">
 
   <?= $this->include('partials/sidebar_rh') ?>
@@ -13,30 +27,38 @@
       </div>
       <div class="topbar-actions">
         <span style="font-size:.8rem;color:var(--muted);background:var(--warn-bg);border:1px solid var(--warn-br);border-radius:6px;padding:5px 10px;display:flex;align-items:center;gap:5px;color:var(--warn)">
-          <i class="bi bi-hourglass-split"></i> 4 en attente
+          <i class="bi bi-hourglass-split"></i> <?= esc((string) ($stats['en_attente'] ?? 0)) ?> en attente
         </span>
       </div>
     </div>
 
     <div class="content">
 
-      <!-- Flash -->
+      <?php if ($flashSuccess): ?>
       <div class="flash flash-success">
         <i class="bi bi-check-circle-fill"></i>
-        Demande de Soa Rakoto approuvée. Son solde a été mis à jour automatiquement.
+        <?= esc($flashSuccess) ?>
       </div>
+      <?php endif; ?>
+      <?php if ($flashError): ?>
+      <div class="flash flash-error">
+        <i class="bi bi-exclamation-circle-fill"></i>
+        <?= esc($flashError) ?>
+      </div>
+      <?php endif; ?>
 
       <!-- Filtre -->
       <div style="display:flex;gap:8px;margin-bottom:1.25rem;flex-wrap:wrap">
-        <button style="padding:6px 14px;border-radius:20px;font-size:.8rem;font-weight:500;border:1.5px solid var(--forest);background:var(--forest);color:var(--white);cursor:pointer">Tous (8)</button>
-        <button style="padding:6px 14px;border-radius:20px;font-size:.8rem;font-weight:500;border:1.5px solid var(--border);background:var(--white);color:var(--muted);cursor:pointer">En attente (4)</button>
-        <button style="padding:6px 14px;border-radius:20px;font-size:.8rem;font-weight:500;border:1.5px solid var(--border);background:var(--white);color:var(--muted);cursor:pointer">Approuvées (3)</button>
-        <button style="padding:6px 14px;border-radius:20px;font-size:.8rem;font-weight:500;border:1.5px solid var(--border);background:var(--white);color:var(--muted);cursor:pointer">Refusées (1)</button>
+        <?php $totalDemandes = array_sum($stats); ?>
+        <button style="padding:6px 14px;border-radius:20px;font-size:.8rem;font-weight:500;border:1.5px solid var(--forest);background:var(--forest);color:var(--white);cursor:pointer">Tous (<?= esc((string) $totalDemandes) ?>)</button>
+        <button style="padding:6px 14px;border-radius:20px;font-size:.8rem;font-weight:500;border:1.5px solid var(--border);background:var(--white);color:var(--muted);cursor:pointer">En attente (<?= esc((string) ($stats['en_attente'] ?? 0)) ?>)</button>
+        <button style="padding:6px 14px;border-radius:20px;font-size:.8rem;font-weight:500;border:1.5px solid var(--border);background:var(--white);color:var(--muted);cursor:pointer">Approuvées (<?= esc((string) ($stats['approuve'] ?? 0)) ?>)</button>
+        <button style="padding:6px 14px;border-radius:20px;font-size:.8rem;font-weight:500;border:1.5px solid var(--border);background:var(--white);color:var(--muted);cursor:pointer">Refusées (<?= esc((string) ($stats['refuse'] ?? 0)) ?>)</button>
         <select class="f-select" style="font-size:.8rem;padding:6px 10px;width:auto;margin-left:auto">
           <option>Tous les départements</option>
-          <option>IT</option>
-          <option>Finance</option>
-          <option>Marketing</option>
+          <?php foreach ($departements as $dept): ?>
+            <option><?= esc((string) ($dept['libelle'] ?? '')) ?></option>
+          <?php endforeach; ?>
         </select>
       </div>
 
@@ -47,118 +69,66 @@
             <tr><th>Employé</th><th>Type</th><th>Période</th><th>Durée</th><th>Solde dispo</th><th>Statut</th><th>Actions</th></tr>
           </thead>
           <tbody>
-            <!-- En attente — actions disponibles -->
-            <tr>
-              <td>
-                <div class="profile-row">
-                  <div class="avatar av-green" style="width:32px;height:32px;font-size:.7rem">SR</div>
-                  <div class="profile-info">
-                    <div class="pname">Soa Rakoto</div>
-                    <div class="pdept">IT · 23 juin → 27 juin</div>
+            <?php if (!empty($demandes)): ?>
+              <?php foreach ($demandes as $demande): ?>
+                <?php
+                  $statut = $demande['statut'] ?? 'en_attente';
+                  $soldeRestant = isset($demande['solde_restant']) ? (int) $demande['solde_restant'] : null;
+                  $soldeInsuffisant = $soldeRestant !== null && $soldeRestant < (int) $demande['nb_jours'];
+                  $initials = strtoupper(substr($demande['prenom'] ?? 'X', 0, 1) . substr($demande['nom'] ?? 'X', 0, 1));
+                ?>
+                <tr>
+                  <td>
+                    <div class="profile-row">
+                      <div class="avatar av-green" style="width:32px;height:32px;font-size:.7rem"><?= esc($initials) ?></div>
+                      <div class="profile-info">
+                        <div class="pname"><?= esc(trim(($demande['prenom'] ?? '') . ' ' . ($demande['nom'] ?? ''))) ?></div>
+                        <div class="pdept"><?= esc((string) ($demande['email'] ?? '')) ?></div>
+                      </div>
+                    </div>
+                  </td>
+                  <td><span class="type-badge"><?= esc((string) ($demande['type_conge'] ?? 'Type')) ?></span></td>
+                  <td class="td-muted" style="font-size:.8rem"><?= esc((string) ($demande['date_debut'] ?? '')) ?> – <?= esc((string) ($demande['date_fin'] ?? '')) ?></td>
+                  <td class="td-mono"><?= esc((string) ($demande['nb_jours'] ?? 0)) ?> j</td>
+                  <td>
+                    <?php if ($soldeRestant !== null): ?>
+                      <span style="font-family:'DM Mono',monospace;font-size:.82rem;color:<?= $soldeInsuffisant ? 'var(--warn)' : 'var(--success)' ?>;font-weight:500"><?= esc((string) $soldeRestant) ?> j</span>
+                      <span style="font-size:.72rem;color:<?= $soldeInsuffisant ? 'var(--danger)' : 'var(--muted)' ?>"><?= $soldeInsuffisant ? ' insuffisant' : ' dispo' ?></span>
+                    <?php else: ?>
+                      <span style="font-family:'DM Mono',monospace;font-size:.82rem;color:var(--muted)">—</span>
+                    <?php endif; ?>
+                  </td>
+                  <td><span class="statut <?= esc((string) ($statutClasses[$statut] ?? 's-attente')) ?>"><?= esc((string) $statut) ?></span></td>
+                  <td>
+                    <?php if ($statut === 'en_attente'): ?>
+                      <div class="action-btns">
+                        <form method="post" action="<?= base_url('rh/demandes/' . $demande['id'] . '/status') ?>">
+                          <input type="hidden" name="status" value="approuve" />
+                          <button class="btn-sm btn-approve" type="submit" <?= $soldeInsuffisant ? 'disabled style="opacity:.4;cursor:not-allowed"' : '' ?>><i class="bi bi-check-lg"></i> Approuver</button>
+                        </form>
+                        <form method="post" action="<?= base_url('rh/demandes/' . $demande['id'] . '/status') ?>">
+                          <input type="hidden" name="status" value="refuse" />
+                          <button class="btn-sm btn-refuse" type="submit"><i class="bi bi-x-lg"></i> Refuser</button>
+                        </form>
+                      </div>
+                    <?php else: ?>
+                      <span class="td-muted" style="font-size:.75rem">Traite par <?= esc((string) ($demande['traite_par'] ?? 'RH')) ?></span>
+                    <?php endif; ?>
+                  </td>
+                </tr>
+              <?php endforeach; ?>
+            <?php else: ?>
+              <tr>
+                <td colspan="7">
+                  <div class="empty">
+                    <i class="bi bi-inbox"></i>
+                    <p>Aucune demande pour le moment.</p>
                   </div>
-                </div>
-              </td>
-              <td><span class="type-badge t-annuel">Annuel</span></td>
-              <td class="td-muted" style="font-size:.8rem">23/06 – 27/06/2025</td>
-              <td class="td-mono">5 j</td>
-              <td>
-                <span style="font-family:'DM Mono',monospace;font-size:.82rem;color:var(--success);font-weight:500">18 j</span>
-                <span style="font-size:.72rem;color:var(--muted)"> dispo</span>
-              </td>
-              <td><span class="statut s-attente">en attente</span></td>
-              <td>
-                <div class="action-btns">
-                  <button class="btn-sm btn-approve"><i class="bi bi-check-lg"></i> Approuver</button>
-                  <button class="btn-sm btn-refuse"><i class="bi bi-x-lg"></i> Refuser</button>
-                </div>
-              </td>
-            </tr>
-            <tr>
-              <td>
-                <div class="profile-row">
-                  <div class="avatar av-amber" style="width:32px;height:32px;font-size:.7rem">TF</div>
-                  <div class="profile-info">
-                    <div class="pname">Tsiry Fidy</div>
-                    <div class="pdept">Finance</div>
-                  </div>
-                </div>
-              </td>
-              <td><span class="type-badge t-maladie">Maladie</span></td>
-              <td class="td-muted" style="font-size:.8rem">18/06 – 19/06/2025</td>
-              <td class="td-mono">2 j</td>
-              <td>
-                <span style="font-family:'DM Mono',monospace;font-size:.82rem;color:var(--warn);font-weight:500">1 j</span>
-                <span style="font-size:.72rem;color:var(--danger)"> ⚠ insuffisant</span>
-              </td>
-              <td><span class="statut s-attente">en attente</span></td>
-              <td>
-                <div class="action-btns">
-                  <button class="btn-sm btn-approve" disabled style="opacity:.4;cursor:not-allowed"><i class="bi bi-check-lg"></i> Approuver</button>
-                  <button class="btn-sm btn-refuse"><i class="bi bi-x-lg"></i> Refuser</button>
-                </div>
-              </td>
-            </tr>
-            <tr>
-              <td>
-                <div class="profile-row">
-                  <div class="avatar av-blue" style="width:32px;height:32px;font-size:.7rem">HA</div>
-                  <div class="profile-info">
-                    <div class="pname">Haja Andria</div>
-                    <div class="pdept">Marketing</div>
-                  </div>
-                </div>
-              </td>
-              <td><span class="type-badge t-annuel">Annuel</span></td>
-              <td class="td-muted" style="font-size:.8rem">30/06 – 04/07/2025</td>
-              <td class="td-mono">5 j</td>
-              <td>
-                <span style="font-family:'DM Mono',monospace;font-size:.82rem;color:var(--success);font-weight:500">22 j</span>
-                <span style="font-size:.72rem;color:var(--muted)"> dispo</span>
-              </td>
-              <td><span class="statut s-attente">en attente</span></td>
-              <td>
-                <div class="action-btns">
-                  <button class="btn-sm btn-approve"><i class="bi bi-check-lg"></i> Approuver</button>
-                  <button class="btn-sm btn-refuse"><i class="bi bi-x-lg"></i> Refuser</button>
-                </div>
-              </td>
-            </tr>
-            <!-- Déjà traitées -->
-            <tr>
-              <td>
-                <div class="profile-row">
-                  <div class="avatar av-green" style="width:32px;height:32px;font-size:.7rem">SR</div>
-                  <div class="profile-info"><div class="pname">Soa Rakoto</div><div class="pdept">IT</div></div>
-                </div>
-              </td>
-              <td><span class="type-badge t-maladie">Maladie</span></td>
-              <td class="td-muted" style="font-size:.8rem">02/06 – 03/06/2025</td>
-              <td class="td-mono">2 j</td>
-              <td><span style="font-family:'DM Mono',monospace;font-size:.82rem;color:var(--muted)">—</span></td>
-              <td><span class="statut s-approuvee">approuvée</span></td>
-              <td><span class="td-muted" style="font-size:.75rem">Traité par Marie R.</span></td>
-            </tr>
+                </td>
+              </tr>
+            <?php endif; ?>
           </tbody>
         </table>
-      </div>
-
-      <!-- Modal refus (inline, visible ici pour le template) -->
-      <div style="margin-top:1.5rem">
-        <div class="form-section" style="border-color:var(--danger-br);background:var(--danger-bg)">
-          <h3 style="color:var(--danger)"><i class="bi bi-x-circle"></i> Confirmer le refus — Tsiry Fidy</h3>
-          <div style="font-size:.875rem;color:var(--ink);margin-bottom:1rem">
-            Demande de <strong>2 jours</strong> du 18 au 19 juin 2025 · Type : Maladie<br>
-            <span style="font-size:.8rem;color:var(--danger)"><i class="bi bi-exclamation-triangle"></i> Solde insuffisant : 1 jour disponible, 2 demandés.</span>
-          </div>
-          <div class="f-group">
-            <label class="f-label">Commentaire pour l'employé (optionnel)</label>
-            <textarea class="f-textarea" placeholder="Ex : Solde insuffisant, veuillez contacter les RH pour un congé sans solde.">Solde insuffisant. Solde maladie restant : 1 jour.</textarea>
-          </div>
-          <div class="form-actions">
-            <button class="btn-sm btn-refuse" style="padding:9px 16px;font-size:.875rem"><i class="bi bi-x-lg"></i> Confirmer le refus</button>
-            <button class="btn-secondary"><i class="bi bi-arrow-left"></i> Annuler</button>
-          </div>
-        </div>
       </div>
 
     </div>

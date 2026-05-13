@@ -34,12 +34,44 @@ abstract class BaseController extends Controller
     {
         // Load here all helpers you want to be available in your controllers that extend BaseController.
         // Caution: Do not put the this below the parent::initController() call below.
-        // $this->helpers = ['form', 'url'];
+        $this->helpers = ['form', 'url'];
 
         // Caution: Do not edit this line.
         parent::initController($request, $response, $logger);
 
         // Preload any models, libraries, etc, here.
         // $this->session = service('session');
+    }
+
+    protected function resolveEmployeId(): ?int
+    {
+        $currentId = session()->get('id');
+        if (!empty($currentId)) {
+            return (int) $currentId;
+        }
+
+        $employeModel = new \App\Models\EmployeModel();
+        $first = $employeModel->orderBy('id', 'asc')->first();
+
+        if (!$first) {
+            return null;
+        }
+
+        $roleName = 'employe';
+        if (!empty($first['id_role'])) {
+            $roleModel = new \App\Models\RoleModel();
+            $roleRow = $roleModel->find($first['id_role']);
+            if ($roleRow && !empty($roleRow['nom'])) {
+                $roleName = $roleRow['nom'];
+            }
+        }
+
+        session()->set([
+            'id' => $first['id'],
+            'role' => $roleName,
+            'role_id' => $first['id_role'] ?? null,
+        ]);
+
+        return (int) $first['id'];
     }
 }
