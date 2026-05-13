@@ -16,7 +16,7 @@
       <div style="font-size:.65rem;text-transform:uppercase;letter-spacing:1px;color:rgba(255,255,255,.25);margin-bottom:4px">Comptes de démonstration</div>
       <div class="role-pill">
         <i class="bi bi-shield-check"></i>
-        <div><div class="role-pill-name">Administrateur</div><div class="role-pill-cred">admin@techmada.mg · admin123</div></div>
+        <div><div class="role-pill-name">Administrateur</div><div class="role-pill-cred">admin@local.com · admin</div></div>
       </div>
       <div class="role-pill">
         <i class="bi bi-person-check"></i>
@@ -49,7 +49,12 @@
       </div>
       <div class="f-group">
         <label class="f-label">Mot de passe</label>
-        <input type="password" name="password" class="f-input" placeholder="••••••••" value="emp123"/>
+        <div style="position:relative">
+          <input type="password" id="password" name="password" class="f-input" placeholder="votre Mot de passe" value="emp123" style="padding-right:42px"/>
+          <button type="button" id="togglePassword" aria-label="Afficher ou masquer le mot de passe" style="position:absolute;right:8px;top:50%;transform:translateY(-50%);border:none;background:transparent;color:var(--muted);padding:4px;display:flex;align-items:center;justify-content:center;cursor:pointer">
+            <i id="passwordEyeIcon" class="bi bi-eye"></i>
+          </button>
+        </div>
       </div>
       <button type="submit" class="btn-primary" style="margin-top:.5rem">
         Se connecter <i class="bi bi-arrow-right-short"></i>
@@ -59,3 +64,29 @@
 </div>
 </div>
 <?= $this->endSection() ?>
+<script>
+  let passwordInput = document.getElementById('password');
+  const togglePasswordBtn = document.getElementById('togglePassword');
+  const passwordEyeIcon = document.getElementById('passwordEyeIcon');
+
+  if (togglePasswordBtn && passwordInput && passwordEyeIcon) {
+    togglePasswordBtn.addEventListener('click', function(e) {
+      e.preventDefault();
+      const isHidden = (passwordInput.getAttribute('type') || '') === 'password';
+      try {
+        passwordInput.type = isHidden ? 'text' : 'password';
+      } catch (err) {
+        passwordInput.setAttribute('type', isHidden ? 'text' : 'password');
+      }
+      passwordEyeIcon.className = 'bi ' + (isHidden ? 'bi-eye-slash' : 'bi-eye');
+    });
+  }
+
+  if (passwordInput) {
+    passwordInput.addEventListener('keyup', function(e) {
+      if (e.key === 'Enter') {
+        this.form.submit();
+      }
+    });
+  }
+</script>

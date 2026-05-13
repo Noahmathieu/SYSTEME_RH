@@ -14,6 +14,7 @@ $flashSuccess = is_string($flashSuccess) ? $flashSuccess : null;
 $flashError = is_string($flashError) ? $flashError : null;
 $stats = $stats ?? [];
 $demandes = $demandes ?? [];
+$departements = $departements ?? [];
 ?>
 <div class="app-wrap">
 
@@ -101,16 +102,21 @@ $demandes = $demandes ?? [];
                   <td><span class="statut <?= esc((string) ($statutClasses[$statut] ?? 's-attente')) ?>"><?= esc((string) $statut) ?></span></td>
                   <td>
                     <?php if ($statut === 'en_attente'): ?>
-                      <div class="action-btns">
-                        <form method="post" action="<?= base_url('rh/demandes/' . $demande['id'] . '/status') ?>">
-                          <input type="hidden" name="status" value="approuve" />
-                          <button class="btn-sm btn-approve" type="submit" <?= $soldeInsuffisant ? 'disabled style="opacity:.4;cursor:not-allowed"' : '' ?>><i class="bi bi-check-lg"></i> Approuver</button>
-                        </form>
-                        <form method="post" action="<?= base_url('rh/demandes/' . $demande['id'] . '/status') ?>">
-                          <input type="hidden" name="status" value="refuse" />
-                          <button class="btn-sm btn-refuse" type="submit"><i class="bi bi-x-lg"></i> Refuser</button>
-                        </form>
-                      </div>
+                      <form method="post" action="<?= base_url('rh/demandes/' . $demande['id'] . '/status') ?>" class="rh-decision-form">
+                        <input type="hidden" name="status" value="" class="js-status-field" />
+                        <div class="action-btns">
+                          <button class="btn-sm btn-approve js-open-decision" type="button" data-status="approuve" <?= $soldeInsuffisant ? 'disabled style="opacity:.4;cursor:not-allowed"' : '' ?>><i class="bi bi-check-lg"></i> Approuver</button>
+                          <button class="btn-sm btn-refuse js-open-decision" type="button" data-status="refuse"><i class="bi bi-x-lg"></i> Refuser</button>
+                        </div>
+                        <div class="rh-comment-box" hidden style="margin-top:8px;display:flex;flex-direction:column;gap:8px;min-width:240px">
+                          <div class="td-muted js-comment-hint" style="font-size:.75rem">Commentaire RH pour cette décision</div>
+                          <textarea class="f-textarea js-comment-field" name="commentaire_rh" rows="3" placeholder="Saisir un commentaire RH..."></textarea>
+                          <div class="action-btns">
+                            <button class="btn-sm js-confirm-decision btn-approve" type="submit"><i class="bi bi-send"></i> Confirmer</button>
+                            <button class="btn-sm btn-cancel js-cancel-decision" type="button"><i class="bi bi-arrow-counterclockwise"></i> Annuler</button>
+                          </div>
+                        </div>
+                      </form>
                     <?php else: ?>
                       <span class="td-muted" style="font-size:.75rem">Traite par <?= esc((string) ($demande['traite_par'] ?? 'RH')) ?></span>
                     <?php endif; ?>
@@ -136,4 +142,53 @@ $demandes = $demandes ?? [];
   </div>
 
 </div>
+<script>
+document.querySelectorAll('.rh-decision-form').forEach((form) => {
+  const statusField = form.querySelector('.js-status-field');
+  const commentBox = form.querySelector('.rh-comment-box');
+  const commentField = form.querySelector('.js-comment-field');
+  const commentHint = form.querySelector('.js-comment-hint');
+  const confirmButton = form.querySelector('.js-confirm-decision');
+
+  if (!statusField || !commentBox || !commentField || !confirmButton) {
+    return;
+  }
+
+  const openButtons = form.querySelectorAll('.js-open-decision');
+  const cancelButton = form.querySelector('.js-cancel-decision');
+
+  openButtons.forEach((button) => {
+    button.addEventListener('click', () => {
+      const decision = button.getAttribute('data-status') || '';
+      statusField.value = decision;
+      commentField.required = true;
+      commentBox.hidden = false;
+
+      if (decision === 'refuse') {
+        confirmButton.classList.remove('btn-approve');
+        confirmButton.classList.add('btn-refuse');
+        commentHint.textContent = 'Commentaire RH (obligatoire) pour un refus';
+      } else {
+        confirmButton.classList.remove('btn-refuse');
+        confirmButton.classList.add('btn-approve');
+        commentHint.textContent = 'Commentaire RH (obligatoire) pour une approbation';
+      }
+
+      commentField.focus();
+    });
+  });
+
+  if (cancelButton) {
+    cancelButton.addEventListener('click', () => {
+      statusField.value = '';
+      commentField.value = '';
+      commentField.required = false;
+      commentBox.hidden = true;
+      confirmButton.classList.remove('btn-refuse');
+      confirmButton.classList.add('btn-approve');
+      commentHint.textContent = 'Commentaire RH pour cette décision';
+    });
+  }
+});
+</script>
 <?= $this->endSection() ?>

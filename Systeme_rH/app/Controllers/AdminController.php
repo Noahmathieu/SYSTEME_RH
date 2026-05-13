@@ -139,6 +139,85 @@ class AdminController extends BaseController
         return redirect()->to('/admin/employes');
     }
 
+    public function updateEmploye($id)
+    {
+        $employe = $this->employeModel->find($id);
+        if (!$employe) {
+            session()->setFlashdata('error', 'Employe non trouve.');
+            return redirect()->to('/admin/employes');
+        }
+
+        $idDepartement = (string) $this->request->getPost('id_departement');
+        $roleInput = (string) $this->request->getPost('id_role');
+        $password = (string) $this->request->getPost('password');
+        $email = trim((string) $this->request->getPost('email'));
+
+        if ($email === '') {
+            session()->setFlashdata('error', 'Email obligatoire.');
+            return redirect()->to('/admin/employes');
+        }
+
+        $existing = $this->employeModel->where('email', $email)->first();
+        if ($existing && (int) $existing['id'] !== (int) $id) {
+            session()->setFlashdata('error', 'Cet email existe deja pour un autre employe.');
+            return redirect()->to('/admin/employes');
+        }
+
+        $roleId = null;
+        if ($roleInput !== '' && is_numeric($roleInput)) {
+            $roleId = (int) $roleInput;
+        }
+
+        if (!$roleId) {
+            $defaultRole = $this->roleModel->where('nom', 'employe')->first();
+            $roleId = $defaultRole ? (int) $defaultRole['id'] : null;
+        }
+
+        $data = [
+            'nom' => trim((string) $this->request->getPost('nom')),
+            'prenom' => trim((string) $this->request->getPost('prenom')),
+            'email' => $email,
+            'id_role' => $roleId,
+            'id_departement' => $idDepartement !== '' ? (int) $idDepartement : null,
+            'date_embauche' => (string) $this->request->getPost('date_embauche') ?: $employe['date_embauche'],
+        ];
+
+        if ($password !== '') {
+            $data['password'] = password_hash($password, PASSWORD_DEFAULT);
+        }
+
+        $this->employeModel->update($id, $data);
+        session()->setFlashdata('success', 'Employe modifie avec succes.');
+        return redirect()->to('/admin/employes');
+    }
+
+    public function deleteEmploye($id)
+    {
+        $employe = $this->employeModel->find($id);
+        if (!$employe) {
+            session()->setFlashdata('error', 'Employe non trouve.');
+            return redirect()->to('/admin/employes');
+        }
+
+        $hasConges = $this->congeModel
+            ->groupStart()
+            ->where('id_employe', $id)
+            ->orWhere('traite_par', $id)
+            ->groupEnd()
+            ->countAllResults() > 0;
+
+        $hasSoldes = $this->soldeModel->where('id_employe', $id)->countAllResults() > 0;
+
+        if ($hasConges || $hasSoldes) {
+            session()->setFlashdata('error', 'Suppression impossible: cet employe a des conges ou des soldes lies. Desactivez-le plutot.');
+            return redirect()->to('/admin/employes');
+        }
+
+        $this->employeModel->delete($id);
+        session()->setFlashdata('success', 'Employe supprime avec succes.');
+        return redirect()->to('/admin/employes');
+    }
+
     public function toggleEmploye($id)
     {
         $employe = $this->employeModel->find($id);

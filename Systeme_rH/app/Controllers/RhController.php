@@ -55,12 +55,17 @@ class RhController extends BaseController
     public function updateStatus($id)
     {
         $status = (string) $this->request->getPost('status');
-        $commentaire = (string) $this->request->getPost('commentaire_rh');
+        $commentaire = trim((string) $this->request->getPost('commentaire_rh'));
 
         $conge = $this->congeModel->find($id);
         if ($conge) {
             if (!in_array($status, ['approuve', 'refuse', 'annule'], true)) {
                 session()->setFlashdata('error', 'Statut invalide.');
+                return redirect()->to('/rh/demandes');
+            }
+
+            if (in_array($status, ['approuve', 'refuse'], true) && $commentaire === '') {
+                session()->setFlashdata('error', 'Le commentaire RH est obligatoire pour approuver ou refuser une demande.');
                 return redirect()->to('/rh/demandes');
             }
 

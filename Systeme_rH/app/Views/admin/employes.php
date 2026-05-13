@@ -154,13 +154,71 @@ $flashInfo = is_string($flashInfo) ? $flashInfo : null;
                   </td>
                   <td>
                     <div class="action-btns">
+                      <button class="btn-sm btn-edit js-toggle-edit" type="button" data-target="edit-row-<?= esc((string) $employe['id']) ?>">
+                        <i class="bi bi-pencil-square"></i> Modifier
+                      </button>
                       <form method="post" action="<?= base_url('admin/employes/' . $employe['id'] . '/toggle') ?>">
                         <button class="btn-sm <?= ((int) $employe['actif'] === 1) ? 'btn-del' : 'btn-view' ?>" type="submit">
                           <i class="bi <?= ((int) $employe['actif'] === 1) ? 'bi-slash-circle' : 'bi-arrow-counterclockwise' ?>"></i>
                           <?= ((int) $employe['actif'] === 1) ? 'Desactiver' : 'Reactiver' ?>
                         </button>
                       </form>
+                      <form method="post" action="<?= base_url('admin/employes/' . $employe['id'] . '/delete') ?>" onsubmit="return confirm('Supprimer cet employe ?');">
+                        <button class="btn-sm btn-refuse" type="submit">
+                          <i class="bi bi-trash"></i> Supprimer
+                        </button>
+                      </form>
                     </div>
+                  </td>
+                </tr>
+                <tr id="edit-row-<?= esc((string) $employe['id']) ?>" style="display:none;background:var(--cream)">
+                  <td colspan="7" style="padding:14px">
+                    <form method="post" action="<?= base_url('admin/employes/' . $employe['id'] . '/update') ?>">
+                      <div class="form-grid-2" style="margin-bottom:.75rem">
+                        <div class="f-group">
+                          <label class="f-label">Prénom</label>
+                          <input type="text" name="prenom" class="f-input" value="<?= esc((string) ($employe['prenom'] ?? '')) ?>" required/>
+                        </div>
+                        <div class="f-group">
+                          <label class="f-label">Nom</label>
+                          <input type="text" name="nom" class="f-input" value="<?= esc((string) ($employe['nom'] ?? '')) ?>" required/>
+                        </div>
+                        <div class="f-group">
+                          <label class="f-label">Email</label>
+                          <input type="email" name="email" class="f-input" value="<?= esc((string) ($employe['email'] ?? '')) ?>" required/>
+                        </div>
+                        <div class="f-group">
+                          <label class="f-label">Nouveau mot de passe (optionnel)</label>
+                          <input type="password" name="password" class="f-input" placeholder="Laisser vide pour conserver"/>
+                        </div>
+                        <div class="f-group">
+                          <label class="f-label">Département</label>
+                          <select name="id_departement" class="f-select">
+                            <option value="">-- Choisir --</option>
+                            <?php foreach ($departements as $departement): ?>
+                              <option value="<?= esc((string) $departement['id']) ?>" <?= ((int) ($employe['id_departement'] ?? 0) === (int) $departement['id']) ? 'selected' : '' ?>><?= esc((string) $departement['nom']) ?></option>
+                            <?php endforeach; ?>
+                          </select>
+                        </div>
+                        <div class="f-group">
+                          <label class="f-label">Rôle</label>
+                          <select name="id_role" class="f-select">
+                            <option value="">-- Choisir --</option>
+                            <?php foreach ($roles as $role): ?>
+                              <option value="<?= esc((string) $role['id']) ?>" <?= ((int) ($employe['id_role'] ?? 0) === (int) $role['id']) ? 'selected' : '' ?>><?= esc((string) $role['nom']) ?></option>
+                            <?php endforeach; ?>
+                          </select>
+                        </div>
+                        <div class="f-group">
+                          <label class="f-label">Date d'embauche</label>
+                          <input type="date" name="date_embauche" class="f-input" value="<?= esc((string) ($employe['date_embauche'] ?? '')) ?>"/>
+                        </div>
+                      </div>
+                      <div class="action-btns">
+                        <button class="btn-sm btn-approve" type="submit"><i class="bi bi-save"></i> Enregistrer</button>
+                        <button class="btn-sm btn-cancel js-close-edit" type="button" data-target="edit-row-<?= esc((string) $employe['id']) ?>"><i class="bi bi-x-circle"></i> Fermer</button>
+                      </div>
+                    </form>
                   </td>
                 </tr>
               <?php endforeach; ?>
@@ -183,4 +241,39 @@ $flashInfo = is_string($flashInfo) ? $flashInfo : null;
   </div>
 
 </div>
+<script>
+document.querySelectorAll('.js-toggle-edit').forEach((button) => {
+  button.addEventListener('click', () => {
+    const rowId = button.getAttribute('data-target');
+    if (!rowId) {
+      return;
+    }
+
+    const row = document.getElementById(rowId);
+    if (!row) {
+      return;
+    }
+
+    const isHidden = row.style.display === 'none' || row.style.display === '';
+    document.querySelectorAll('tr[id^="edit-row-"]').forEach((editRow) => {
+      editRow.style.display = 'none';
+    });
+    row.style.display = isHidden ? 'table-row' : 'none';
+  });
+});
+
+document.querySelectorAll('.js-close-edit').forEach((button) => {
+  button.addEventListener('click', () => {
+    const rowId = button.getAttribute('data-target');
+    if (!rowId) {
+      return;
+    }
+
+    const row = document.getElementById(rowId);
+    if (row) {
+      row.style.display = 'none';
+    }
+  });
+});
+</script>
 <?= $this->endSection() ?>
