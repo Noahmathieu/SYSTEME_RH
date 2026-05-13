@@ -1,7 +1,6 @@
 # SYSTEME_RH
 Cette site est fait pour gerer les conges des employees
-Alors 
-
+Alors quand vous entrer a chaque login reconnait le role et il vous redirige vers votre page qui est dediee a vous.Merci!
 
 ## Utilisateur (pour se connecter)
 Admin : Email :admin@local.com //password: admin
