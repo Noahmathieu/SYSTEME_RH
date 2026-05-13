@@ -50,3 +50,13 @@ CREATE TABLE conges(
     FOREIGN KEY (id_employe) REFERENCES employes(id),
     FOREIGN KEY (id_type_conge) REFERENCES types_conges(id)
 );
+
+INSERT INTO departements (nom, description) VALUES
+('Ressources Humaines', 'Gestion du personnel et des congés'),
+('Informatique', 'Développement et maintenance des systèmes informatiques'),
+('Finance', 'Gestion des finances et de la comptabilité');
+
+INSERT INTO employes (nom, prenom, email, password, role, id_departement, date_embauche) VALUES
+('Dupont', 'Jean', 'jean.dupont@entreprise.com', 'password123', 'employe', 1, '2020-01-01'),
+('Martin', 'Sophie', 'sophie.martin@entreprise.com', 'password456', 'employe', 2, '2020-01-01'),
+('Durand', 'Pierre', 'pierre.durand@entreprise.com', 'password789', 'employe', 3, '2020-01-01');
