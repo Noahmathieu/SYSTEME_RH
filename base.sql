@@ -67,8 +67,10 @@ INSERT INTO departements (nom, description) VALUES
 ('Informatique', 'Développement et maintenance des systèmes informatiques'),
 ('Finance', 'Gestion des finances et de la comptabilité');
 
-INSERT INTO employes (nom, prenom, email, password, role, id_departement, date_embauche) VALUES
-('Dupont', 'Jean', 'jean.dupont@entreprise.com', 'password123', 'employe', 1, '2020-01-01'),
-('Martin', 'Sophie', 'sophie.martin@entreprise.com', 'password456', 'employe', 2, '2020-01-01'),
-('Durand', 'Pierre', 'pierre.durand@entreprise.com', 'password789', 'employe', 3, '2020-01-01');
+INSERT INTO employes (nom, prenom, email, password, id_role, id_departement, date_embauche) VALUES
+('Admin', 'TechMada', 'admin@techmada.mg', 'admin123', 1, 1, '2020-01-01'),
+('RH', 'TechMada', 'rh@techmada.mg', 'rh123', 2, 1, '2020-01-01'),
+('Employe', 'TechMada', 'employe@techmada.mg', 'emp123', 3, 2, '2020-01-01');
+
+
 

@@ -28,6 +28,12 @@
       </div>
     </div>
   </div>
+  <?php if (session()->getFlashdata('erreur')): ?>
+    <div class="flash flash-error">
+      <i class="bi bi-exclamation-circle-fill"></i>
+      <?= session()->getFlashdata('erreur') ?>
+    </div>
+  <?php endif; ?>
 
   <!-- Panneau droit -->
   <div class="auth-right">
@@ -41,15 +47,22 @@
       Identifiants incorrects. Veuillez réessayer.
     </div>
     -->
+    
+    <?php foreach ($users ?? [] as $user): ?>
+      <div class="flash flash-info">
+        <i class="bi bi-info-circle-fill"></i>
+        Compte de démonstration : <?= $user['email'] ?> / <?= $user['password'] ?>
+      </div>
+    <?php endforeach; ?>
 
     <form method="post" action="<?= base_url('login') ?>">
       <div class="f-group">
         <label class="f-label">Adresse email</label>
-        <input type="email" name="email" class="f-input" placeholder="vous@techmada.mg" value="employe@techmada.mg"/>
+        <input type="email" name="email" id="email" class="f-input" placeholder="vous@techmada.mg" value="employe@techmada.mg"/>
       </div>
       <div class="f-group">
         <label class="f-label">Mot de passe</label>
-        <input type="password" name="password" class="f-input" placeholder="••••••••" value="emp123"/>
+        <input type="password" name="password" id="password" class="f-input" placeholder="••••••••" value="emp123"/>
       </div>
       <button type="submit" class="btn-primary" style="margin-top:.5rem">
         Se connecter <i class="bi bi-arrow-right-short"></i>
