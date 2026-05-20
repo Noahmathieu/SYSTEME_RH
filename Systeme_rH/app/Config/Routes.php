@@ -40,5 +40,15 @@ $routes->group('admin', ['filter' => ['auth', 'role:admin']], static function ($
 	$routes->post('employes/(:num)/toggle', 'AdminController::toggleEmploye/$1');
 	$routes->get('departements', 'AdminController::departements');
 	$routes->get('types_conges', 'AdminController::typesConges');
+
+	// Departements CRUD
+	$routes->post('departements', 'AdminController::storeDepartement');
+	$routes->post('departements/(:num)/update', 'AdminController::updateDepartement/$1');
+	$routes->post('departements/(:num)/delete', 'AdminController::deleteDepartement/$1');
+
+	// Types de congé CRUD
+	$routes->post('types_conges', 'AdminController::storeTypeConge');
+	$routes->post('types_conges/(:num)/update', 'AdminController::updateTypeConge/$1');
+	$routes->post('types_conges/(:num)/delete', 'AdminController::deleteTypeConge/$1');
 	$routes->get('soldes', 'AdminController::soldes');
 });

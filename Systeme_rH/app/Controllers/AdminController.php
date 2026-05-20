@@ -232,14 +232,121 @@ class AdminController extends BaseController
     }
     public function departements()
     {
-        session()->setFlashdata('info', 'La gestion des departements arrive bientot.');
-        return redirect()->to('/admin/employes');
+        $departements = $this->departementModel->findAll();
+        return view('admin/departements', [
+            'departements' => $departements,
+        ]);
     }
 
     public function typesConges()
     {
-        session()->setFlashdata('info', 'La gestion des types de conge arrive bientot.');
-        return redirect()->to('/admin/employes');
+        $types = $this->typeCongeModel->findAll();
+        return view('admin/types_conges', [
+            'types' => $types,
+        ]);
+    }
+
+    // Departements CRUD
+    public function storeDepartement()
+    {
+        $nom = trim((string) $this->request->getPost('nom'));
+        $description = trim((string) $this->request->getPost('description'));
+        if ($nom === '') {
+            session()->setFlashdata('error', 'Le nom du département est requis.');
+            return redirect()->to('/admin/departements');
+        }
+        $this->departementModel->insert(['nom' => $nom, 'description' => $description]);
+        session()->setFlashdata('success', 'Département ajouté.');
+        return redirect()->to('/admin/departements');
+    }
+
+    public function updateDepartement($id)
+    {
+        $departement = $this->departementModel->find($id);
+        if (!$departement) {
+            session()->setFlashdata('error', 'Département introuvable.');
+            return redirect()->to('/admin/departements');
+        }
+        $nom = trim((string) $this->request->getPost('nom'));
+        $description = trim((string) $this->request->getPost('description'));
+        if ($nom === '') {
+            session()->setFlashdata('error', 'Le nom du département est requis.');
+            return redirect()->to('/admin/departements');
+        }
+        $this->departementModel->update($id, ['nom' => $nom, 'description' => $description]);
+        session()->setFlashdata('success', 'Département modifié.');
+        return redirect()->to('/admin/departements');
+    }
+
+    public function deleteDepartement($id)
+    {
+        $departement = $this->departementModel->find($id);
+        if (!$departement) {
+            session()->setFlashdata('error', 'Département introuvable.');
+            return redirect()->to('/admin/departements');
+        }
+        // Simple safety: check if any employees assigned
+        $employeCount = $this->employeModel->where('id_departement', $id)->countAllResults();
+        if ($employeCount > 0) {
+            session()->setFlashdata('error', 'Impossible de supprimer: des employés appartiennent à ce département.');
+            return redirect()->to('/admin/departements');
+        }
+        $this->departementModel->delete($id);
+        session()->setFlashdata('success', 'Département supprimé.');
+        return redirect()->to('/admin/departements');
+    }
+
+    // Types de congé CRUD
+    public function storeTypeConge()
+    {
+        $libelle = trim((string) $this->request->getPost('libelle'));
+        $jours = (int) $this->request->getPost('jours_annuels');
+        $deductible = $this->request->getPost('deductible') ? 1 : 0;
+        if ($libelle === '') {
+            session()->setFlashdata('error', 'Libellé requis.');
+            return redirect()->to('/admin/types_conges');
+        }
+        $this->typeCongeModel->insert(['libelle' => $libelle, 'jours_annuels' => $jours, 'deductible' => $deductible]);
+        session()->setFlashdata('success', 'Type de congé ajouté.');
+        return redirect()->to('/admin/types_conges');
+    }
+
+    public function updateTypeConge($id)
+    {
+        $type = $this->typeCongeModel->find($id);
+        if (!$type) {
+            session()->setFlashdata('error', 'Type introuvable.');
+            return redirect()->to('/admin/types_conges');
+        }
+        $libelle = trim((string) $this->request->getPost('libelle'));
+        $jours = (int) $this->request->getPost('jours_annuels');
+        $deductible = $this->request->getPost('deductible') ? 1 : 0;
+        if ($libelle === '') {
+            session()->setFlashdata('error', 'Libellé requis.');
+            return redirect()->to('/admin/types_conges');
+        }
+        $this->typeCongeModel->update($id, ['libelle' => $libelle, 'jours_annuels' => $jours, 'deductible' => $deductible]);
+        session()->setFlashdata('success', 'Type de congé modifié.');
+        return redirect()->to('/admin/types_conges');
+    }
+
+    public function deleteTypeConge($id)
+    {
+        $type = $this->typeCongeModel->find($id);
+        if (!$type) {
+            session()->setFlashdata('error', 'Type introuvable.');
+            return redirect()->to('/admin/types_conges');
+        }
+        // Safety: check if any soldes or conges reference this type
+        $soldesCount = $this->soldeModel->where('id_type_conge', $id)->countAllResults();
+        $congesCount = $this->congeModel->where('id_type_conge', $id)->countAllResults();
+        if ($soldesCount > 0 || $congesCount > 0) {
+            session()->setFlashdata('error', 'Impossible de supprimer: ce type est utilisé dans des soldes ou demandes.');
+            return redirect()->to('/admin/types_conges');
+        }
+        $this->typeCongeModel->delete($id);
+        session()->setFlashdata('success', 'Type de congé supprimé.');
+        return redirect()->to('/admin/types_conges');
     }
 
     public function soldes()
