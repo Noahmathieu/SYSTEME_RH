@@ -107,7 +107,9 @@ $flashError = session()->getFlashdata('error');
             },
             scales: {
               y: {
-                beginAtZero: true
+                beginAtZero: true,
+                suggestedMax: 10,
+                
               }
             }
           }
@@ -122,6 +124,8 @@ $flashError = session()->getFlashdata('error');
             .then(data => {
 
               chart.data.datasets[0].data = data.valeurs;
+              // const max = Math.max(...data.valeurs);
+              // chart.options.scales.y.suggestedMax = max + 0.5;
 
               chart.update();
             });
