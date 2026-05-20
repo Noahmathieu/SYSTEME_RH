@@ -6,6 +6,7 @@
     <div class="sidebar-section">Menu</div>
     <ul class="sidebar-nav">
       <li><a href="<?= base_url('employe/dashboard') ?>" class="<?= (current_url() == base_url('employe/dashboard')) ? 'active' : '' ?>"><i class="bi bi-grid-1x2"></i> Tableau de bord</a></li>
+      <li><a href="<?= base_url('employe/calendrier') ?>" class="<?= (current_url() == base_url('employe/calendrier')) ? 'active' : '' ?>"><i class="bi bi-calendar3"></i> Calendrier</a></li>
       <li><a href="<?= base_url('employe/create') ?>" class="<?= (current_url() == base_url('employe/create')) ? 'active' : '' ?>"><i class="bi bi-plus-circle"></i> Nouvelle demande</a></li>
       <li>
         <a href="<?= base_url('employe/conges') ?>" class="<?= (current_url() == base_url('employe/conges')) ? 'active' : '' ?>">

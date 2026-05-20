@@ -178,4 +178,16 @@ class employeController extends BaseController
     {
         return redirect()->to('/employe/dashboard');
     }     
+    public function calendrier()
+    {
+        $idEmploye = $this->resolveEmployeId();
+        if (!$idEmploye) {
+            return redirect()->to('/login');
+        }
+
+        $congeModel = new CongeModel();
+        $demandes = $congeModel->getCongesByEmployeWithType($idEmploye);
+
+        return view('employe/calendrier', ['demandes' => $demandes]);
+    }
 }

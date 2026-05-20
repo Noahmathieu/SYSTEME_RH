@@ -39,38 +39,46 @@ $totalRestant = $totalRestant ?? 0;
     <div class="content">
 
       <?php if ($flashSuccess): ?>
-      <div class="flash flash-success">
-        <i class="bi bi-check-circle-fill"></i>
-        <?= esc($flashSuccess) ?>
-      </div>
+        <div class="flash flash-success">
+          <i class="bi bi-check-circle-fill"></i>
+          <?= esc($flashSuccess) ?>
+        </div>
       <?php endif; ?>
       <?php if ($flashError): ?>
-      <div class="flash flash-error">
-        <i class="bi bi-exclamation-circle-fill"></i>
-        <?= esc($flashError) ?>
-      </div>
+        <div class="flash flash-error">
+          <i class="bi bi-exclamation-circle-fill"></i>
+          <?= esc($flashError) ?>
+        </div>
       <?php endif; ?>
 
       <!-- Métriques -->
       <div class="metrics">
         <div class="metric">
-          <div class="metric-top"><div class="metric-icon mi-amber"><i class="bi bi-hourglass-split"></i></div></div>
+          <div class="metric-top">
+            <div class="metric-icon mi-amber"><i class="bi bi-hourglass-split"></i></div>
+          </div>
           <div class="metric-val"><?= esc((string) ($stats['en_attente'] ?? 0)) ?></div>
           <div class="metric-label">En attente</div>
         </div>
         <div class="metric">
-          <div class="metric-top"><div class="metric-icon mi-green"><i class="bi bi-check-circle"></i></div></div>
+          <div class="metric-top">
+            <div class="metric-icon mi-green"><i class="bi bi-check-circle"></i></div>
+          </div>
           <div class="metric-val"><?= esc((string) ($stats['approuve'] ?? 0)) ?></div>
           <div class="metric-label">Approuvées</div>
         </div>
         <div class="metric">
-          <div class="metric-top"><div class="metric-icon mi-forest"><i class="bi bi-calendar-check"></i></div></div>
+          <div class="metric-top">
+            <div class="metric-icon mi-forest"><i class="bi bi-calendar-check"></i></div>
+          </div>
           <div class="metric-val"><?= esc((string) $totalRestant) ?></div>
           <div class="metric-label">Jours restants</div>
           <div class="metric-sub">sur <?= esc((string) $totalAttribues) ?> cette année</div>
         </div>
         <div class="metric">
-          <div class="metric-top"><div class="metric-icon mi-red"><i class="bi bi-x-circle"></i></div></div>
+          <div class="metric-top">
+            <div class="metric-icon mi-red"><i class="bi bi-x-circle"></i></div>
+          </div>
           <div class="metric-val"><?= esc((string) ($stats['refuse'] ?? 0)) ?></div>
           <div class="metric-label">Refusée</div>
         </div>
@@ -78,23 +86,27 @@ $totalRestant = $totalRestant ?? 0;
 
       <!-- Soldes de congés -->
       <div class="data-card">
-        <div class="data-card-head"><h3>Mes soldes de congés — <?= esc(date('Y')) ?></h3></div>
+        <div class="data-card-head">
+          <h3>Mes soldes de congés — <?= esc(date('Y')) ?></h3>
+        </div>
         <div style="padding:1rem 1.25rem;display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:1rem">
           <?php if (!empty($soldes)): ?>
             <?php foreach ($soldes as $solde): ?>
               <?php
-                $attribues = (int) $solde['jours_attribues'];
-                $pris = (int) $solde['jours_pris'];
-                $restant = max(0, $attribues - $pris);
-                $percent = $attribues > 0 ? (int) round(($restant / $attribues) * 100) : 0;
-                $fillClass = $percent <= 20 ? 'danger' : ($percent <= 40 ? 'warn' : '');
+              $attribues = (int) $solde['jours_attribues'];
+              $pris = (int) $solde['jours_pris'];
+              $restant = max(0, $attribues - $pris);
+              $percent = $attribues > 0 ? (int) round(($restant / $attribues) * 100) : 0;
+              $fillClass = $percent <= 20 ? 'danger' : ($percent <= 40 ? 'warn' : '');
               ?>
               <div class="solde-card" style="margin:0">
                 <div class="solde-header">
                   <span class="solde-type"><?= esc((string) ($solde['libelle'] ?? 'Type')) ?></span>
                   <span class="solde-nums"><strong><?= esc((string) $restant) ?></strong> / <?= esc((string) $attribues) ?> j</span>
                 </div>
-                <div class="solde-bar"><div class="solde-fill <?= esc($fillClass) ?>" style="width:<?= esc((string) min(100, $percent)) ?>%"></div></div>
+                <div class="solde-bar">
+                  <div class="solde-fill <?= esc($fillClass) ?>" style="width:<?= esc((string) min(100, $percent)) ?>%"></div>
+                </div>
                 <div class="solde-label"><?= esc((string) $restant) ?> jours restants · <?= esc((string) $pris) ?> pris</div>
               </div>
             <?php endforeach; ?>
@@ -107,6 +119,9 @@ $totalRestant = $totalRestant ?? 0;
         </div>
       </div>
 
+      <!-- Historique et statistiques -->
+       
+
       <!-- Dernières demandes -->
       <div class="data-card">
         <div class="data-card-head">
@@ -115,7 +130,14 @@ $totalRestant = $totalRestant ?? 0;
         </div>
         <table class="tbl">
           <thead>
-            <tr><th>Type</th><th>Du</th><th>Au</th><th>Durée</th><th>Statut</th><th>Action</th></tr>
+            <tr>
+              <th>Type</th>
+              <th>Du</th>
+              <th>Au</th>
+              <th>Durée</th>
+              <th>Statut</th>
+              <th>Action</th>
+            </tr>
           </thead>
           <tbody>
             <?php if (!empty($demandes)): ?>
