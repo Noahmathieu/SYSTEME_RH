@@ -13,33 +13,33 @@ $flashError = session()->getFlashdata('error');
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Document</title>
 
-    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 
-    <style>
-        body {
-            font-family: Arial, sans-serif;
-            background: #f5f7fa;
-            margin: 0;
-            padding: 30px;
-        }
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background: #f5f7fa;
+      margin: 0;
+      padding: 30px;
+    }
 
-        .container {
-            width: 900px;
-            margin: auto;
-            background: white;
-            padding: 20px;
-            border-radius: 10px;
-            box-shadow: 0 4px 15px rgba(0,0,0,0.1);
-        }
+    .container {
+      width: 900px;
+      margin: auto;
+      background: white;
+      padding: 20px;
+      border-radius: 10px;
+      box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+    }
 
-        h1 {
-            text-align: center;
-        }
+    h1 {
+      text-align: center;
+    }
 
-        canvas {
-            margin-top: 20px;
-        }
-    </style>
+    canvas {
+      margin-top: 20px;
+    }
+  </style>
 </head>
 
 <body>
@@ -60,54 +60,79 @@ $flashError = session()->getFlashdata('error');
         </div>
       </div>
 
-<div class="container">
-    <h1>Statistiques des ventes mensuelles</h1>
-    <canvas id="salesChart"></canvas>
-</div>
+      <div class="container">
+        <h1>Statistiques des congés mensuelles</h1>
+        <select id="annee">
+          <option value="2025">2025</option>
+          <option value="2026">2026</option>
+          <option value="2027">2027</option>
+        </select>
 
-<script>
-    const ctx = document.getElementById('salesChart');
+        <canvas id="salesChart"></canvas>
+      </div>
 
-    new Chart(ctx, {
-        type: 'bar',
-        data: {
+      <script>
+        const ctx = document.getElementById('salesChart');
+
+        const chart = new Chart(ctx, {
+          type: 'bar',
+          data: {
             labels: [
-                'Janvier',
-                'Février',
-                'Mars',
-                'Avril',
-                'Mai',
-                'Juin'
+              'Janvier',
+              'Février',
+              'Mars',
+              'Avril',
+              'Mai',
+              'Juin',
+              'Juillet',
+              'Aout',
+              'Septembre',
+              'Octobre',
+              'Novembre',
+              'Décembre'
             ],
             datasets: [{
-                label: 'Ventes',
-                data: [120, 190, 90, 220, 150, 300],
-                backgroundColor: [
-                    '#3498db',
-                    '#2ecc71',
-                    '#f39c12',
-                    '#9b59b6',
-                    '#e74c3c',
-                    '#1abc9c'
-                ],
-                borderWidth: 1
+              label: 'Conges',
+              data: [],
+              backgroundColor: '#3498db',
+              borderWidth: 1
             }]
-        },
-        options: {
+          },
+          options: {
             responsive: true,
             plugins: {
-                legend: {
-                    display: true
-                }
+              legend: {
+                display: true
+              }
             },
             scales: {
-                y: {
-                    beginAtZero: true
-                }
+              y: {
+                beginAtZero: true
+              }
             }
+          }
+        });
+
+        function chargerDonnees(annee) {
+
+          fetch("<?= base_url('admin/chart/') ?>" + annee)
+
+            .then(response => response.json())
+
+            .then(data => {
+
+              chart.data.datasets[0].data = data.valeurs;
+
+              chart.update();
+            });
         }
-    });
-</script>
+
+        chargerDonnees(2025);
+
+        document.getElementById('annee').addEventListener('change', function() {
+          chargerDonnees(this.value);
+        });
+      </script>
 
       <div class="content">
         <?php if ($flashSuccess): ?>

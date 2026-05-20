@@ -1,5 +1,7 @@
 <?php
+
 namespace App\Controllers;
+
 use App\Models\EmployeModel;
 use App\Models\CongeModel;
 use App\Models\DepartementModel;
@@ -354,5 +356,22 @@ class AdminController extends BaseController
         session()->setFlashdata('info', 'La gestion des soldes arrive bientot.');
         return redirect()->to('/admin/employes');
     }
-    
+
+    public function chargerdonnees($annee)
+    {
+        $congesCount = $this->congeModel->getCongesParMois($annee);
+
+
+        $mois = array_fill(0, 12, 0);
+
+        foreach ($congesCount as $row) {
+            $index = (int)$row['mois'] - 1;
+            $mois[$index] = (int)$row['nb'];
+        }
+
+        return $this->response->setJSON([
+            'valeurs' => $mois
+        ]);
+
+    }
 }

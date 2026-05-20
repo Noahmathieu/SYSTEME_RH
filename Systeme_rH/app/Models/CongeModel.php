@@ -1,5 +1,7 @@
 <?php
+
 namespace App\Models;
+
 use CodeIgniter\Model;
 
 class CongeModel extends Model
@@ -39,14 +41,15 @@ class CongeModel extends Model
             ->get()
             ->getResultArray();
     }
-    public function getNombreCongesByType(int $id_employe): array{
+    public function getNombreCongesByType($id_employe): array
+    {
         return $this->db->table('conges c')
-        ->select('COUNT(C.id_type_conge) nb,TC.libelle libelle')
-        ->where('C.id_employe='.$id_employe)
-        ->join('types_conges TC','C.id_type_conge=TC.id')
-        ->groupBy ('C.id_type_conge')
-        ->get()
-        ->getResultArray();
+            ->select('COUNT(C.id_type_conge) nb,TC.libelle libelle')
+            ->where('C.id_employe=' . $id_employe)
+            ->join('types_conges TC', 'C.id_type_conge=TC.id')
+            ->groupBy('C.id_type_conge')
+            ->get()
+            ->getResultArray();
         // SELECT COUNT(C.id_type_conge),TC.libelle FROM conges AS C JOIN types_conges AS TC ON C.id_type_conge=TC.id WHERE C.id_employe=3 GROUP BY C.id_type_conge
     }
     public function getCongesWithSoldes(array $statuts = [], int $limit = 0): array
@@ -71,5 +74,18 @@ class CongeModel extends Model
 
         return $builder->get()->getResultArray();
     }
+    public function getCongesParMois($annee)
+    {
+        return $this->db->table('conges c')
+            ->select("strftime('%m', c.date_debut) mois,COUNT(c.id) as nb")
+            ->join('types_conges tc', 'c.id_type_conge = tc.id')
+            ->where("strftime('%Y', c.date_debut)", $annee)
+            ->where("c.statut", "approuve")
+            ->groupBy("mois")
+            ->orderBy("mois", "ASC")
+            ->get()
+            ->getResultArray();
+        //SELECT strftime('%m', date_debut) AS mois,COUNT(id) AS nb FROM conges WHERE strftime('%Y', date_debut) = '2026' AND statut="approuve" GROUP BY mois ORDER BY mois ASC;
 
+    }
 }
