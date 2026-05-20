@@ -18,6 +18,9 @@ class employeController extends BaseController
 
         $soldes = $modelSolde->getSoldeByEmployeWithType($idEmploye);
         $demandes = $modelConge->getCongesByEmployeWithType($idEmploye);
+        $nbdemandes = $modelConge->getNombreCongesByType($idEmploye);
+
+        
 
         $stats = [
             'en_attente' => 0,
@@ -50,6 +53,7 @@ class employeController extends BaseController
             'stats' => $stats,
             'totalAttribues' => $totalAttribues,
             'totalRestant' => $totalRestant,
+            'nbDemandes'=>$nbdemandes,
         ]);
     }
 

@@ -39,7 +39,16 @@ class CongeModel extends Model
             ->get()
             ->getResultArray();
     }
-
+    public function getNombreCongesByType(int $id_employe): array{
+        return $this->db->table('conges c')
+        ->select('COUNT(C.id_type_conge) nb,TC.libelle libelle')
+        ->where('C.id_employe='.$id_employe)
+        ->join('types_conges TC','C.id_type_conge=TC.id')
+        ->groupBy ('C.id_type_conge')
+        ->get()
+        ->getResultArray();
+        // SELECT COUNT(C.id_type_conge),TC.libelle FROM conges AS C JOIN types_conges AS TC ON C.id_type_conge=TC.id WHERE C.id_employe=3 GROUP BY C.id_type_conge
+    }
     public function getCongesWithSoldes(array $statuts = [], int $limit = 0): array
     {
         $builder = $this->db->table('conges c')

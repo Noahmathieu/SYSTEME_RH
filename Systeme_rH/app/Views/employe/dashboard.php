@@ -15,6 +15,7 @@ $flashError = is_string($flashError) ? $flashError : null;
 $stats = $stats ?? [];
 $soldes = $soldes ?? [];
 $demandes = $demandes ?? [];
+$nbDemandes = $nbDemandes ?? [];
 $totalAttribues = $totalAttribues ?? 0;
 $totalRestant = $totalRestant ?? 0;
 ?>
@@ -120,8 +121,20 @@ $totalRestant = $totalRestant ?? 0;
       </div>
 
       <!-- Historique et statistiques -->
-       
+      <div class="data-card">
+        <div class="data-card-head">
+          <h3>Historique et statistiques</h3>
+        </div>
+        <?php foreach ($nbDemandes as $nb) { ?>
 
+          <div class="metric">
+           
+            <div class="metric-val"><?= $nb['nb'] ?></div>
+            <div class="metric-label"><?= esc($nb['libelle']) ?></div>
+          </div>
+        <?php } ?>
+
+      </div>
       <!-- Dernières demandes -->
       <div class="data-card">
         <div class="data-card-head">
