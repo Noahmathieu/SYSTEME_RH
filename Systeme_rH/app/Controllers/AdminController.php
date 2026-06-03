@@ -374,4 +374,21 @@ class AdminController extends BaseController
         ]);
 
     }
+    public function chargerdonneesCongesJour($annee)
+    {
+        $congesCount = $this->congeModel->getCongesJour($annee);
+
+
+        $mois = array_fill(0, 12, 0);
+
+        foreach ($congesCount as $row) {
+            $index = (int)$row['mois'] - 1;
+            $mois[$index] = (int)$row['nb'];
+        }
+
+        return $this->response->setJSON([
+            'valeurs' => $mois
+        ]);
+
+    }
 }

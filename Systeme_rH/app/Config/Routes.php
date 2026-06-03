@@ -41,7 +41,9 @@ $routes->group('admin', ['filter' => ['auth', 'role:admin']], static function ($
 	$routes->post('employes/(:num)/toggle', 'AdminController::toggleEmploye/$1');
 	$routes->get('departements', 'AdminController::departements');
 	$routes->get('types_conges', 'AdminController::typesConges');
-	$routes->get('chart/(:num)', 'AdminController::chargerdonnees/$1');
+	$routes->get('chart1/(:num)', 'AdminController::chargerdonnees/$1');
+	$routes->get('chart2/(:num)', 'AdminController::chargerdonneesCongesJour/$1');
+
 
 
 	// Departements CRUD

@@ -88,4 +88,18 @@ class CongeModel extends Model
         //SELECT strftime('%m', date_debut) AS mois,COUNT(id) AS nb FROM conges WHERE strftime('%Y', date_debut) = '2026' AND statut="approuve" GROUP BY mois ORDER BY mois ASC;
 
     }
+    public function getCongesJour($annee)
+    {
+        return $this->db->table('conges c')
+            ->select("strftime('%m', c.date_debut) mois,SUM(nb_jours) as nb")
+            ->join('types_conges tc', 'c.id_type_conge = tc.id')
+            ->where("strftime('%Y', c.date_debut)", $annee)
+            ->where("c.statut", "approuve")
+            ->groupBy("mois")
+            ->orderBy("mois", "ASC")
+            ->get()
+            ->getResultArray();
+        //SELECT strftime('%m', date_debut) AS mois,SUM(nb_jours) as jour FROM conges WHERE strftime('%Y', date_debut) = '2026' AND statut="approuve" GROUP BY mois ORDER BY mois ASC;
+
+    }
 }

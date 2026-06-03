@@ -69,12 +69,14 @@ $flashError = session()->getFlashdata('error');
         </select>
 
         <canvas id="salesChart"></canvas>
+        <canvas id="salesChart2"></canvas>
+
       </div>
 
       <script>
-        const ctx = document.getElementById('salesChart');
+        const ctx1 = document.getElementById('salesChart');
 
-        const chart = new Chart(ctx, {
+        const chart1 = new Chart(ctx1, {
           type: 'bar',
           data: {
             labels: [
@@ -115,28 +117,92 @@ $flashError = session()->getFlashdata('error');
           }
         });
 
-        function chargerDonnees(annee) {
+        const ctx2 = document.getElementById('salesChart2');
 
-          fetch("<?= base_url('admin/chart/') ?>" + annee)
+        const chart2 = new Chart(ctx2, {
+          type: 'bar',
+          data: {
+            labels: [
+              'Janvier',
+              'Février',
+              'Mars',
+              'Avril',
+              'Mai',
+              'Juin',
+              'Juillet',
+              'Aout',
+              'Septembre',
+              'Octobre',
+              'Novembre',
+              'Décembre'
+            ],
+            datasets: [{
+              label: 'Jours de Conges',
+              data: [],
+              backgroundColor: '#3498db',
+              borderWidth: 1
+            }]
+          },
+          options: {
+            responsive: true,
+            plugins: {
+              legend: {
+                display: true
+              }
+            },
+            scales: {
+              y: {
+                beginAtZero: true,
+                suggestedMax: 10,
+                
+              }
+            }
+          }
+        });
+
+
+        function chargerDonnees1(annee) {
+
+          fetch("<?= base_url('admin/chart1/') ?>" + annee)
 
             .then(response => response.json())
 
             .then(data => {
 
-              chart.data.datasets[0].data = data.valeurs;
+              chart1.data.datasets[0].data = data.valeurs;
               // const max = Math.max(...data.valeurs);
               // chart.options.scales.y.suggestedMax = max + 0.5;
 
-              chart.update();
+              chart1.update();
+            });
+        }
+         function chargerDonnees2(annee) {
+
+          fetch("<?= base_url('admin/chart2/') ?>" + annee)
+
+            .then(response => response.json())
+
+            .then(data => {
+
+              chart2.data.datasets[0].data = data.valeurs;
+              // const max = Math.max(...data.valeurs);
+              // chart.options.scales.y.suggestedMax = max + 0.5;
+
+              chart2.update();
             });
         }
 
-        chargerDonnees(2025);
+        chargerDonnees1(2025);
+        chargerDonnees2(2025);
+
 
         document.getElementById('annee').addEventListener('change', function() {
-          chargerDonnees(this.value);
+          chargerDonnees1(this.value);
+          chargerDonnees2(this.value);
+
         });
       </script>
+
 
       <div class="content">
         <?php if ($flashSuccess): ?>
