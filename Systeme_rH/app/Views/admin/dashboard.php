@@ -69,6 +69,8 @@ $flashError = session()->getFlashdata('error');
         </select>
 
         <canvas id="salesChart"></canvas>
+        <h1>Statistiques des congés par jour de congés</h1>
+
         <canvas id="salesChart2"></canvas>
 
       </div>
