@@ -18,6 +18,7 @@ $routes->group('employe', ['filter' => ['auth', 'role:employe']], static functio
 	$routes->post('store', 'employeController::store');
 	$routes->get('conges', 'employeController::conges');
 	$routes->post('conges/(:num)/cancel', 'employeController::cancel/$1');
+	$routes->get('calendrier', 'employeController::calendrier');
 });
 
 // RH

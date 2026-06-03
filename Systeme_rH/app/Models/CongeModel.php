@@ -63,4 +63,21 @@ class CongeModel extends Model
         return $builder->get()->getResultArray();
     }
 
+    public function getDemandeByTypeConges(int $idemployes): array {
+
+        return $this->db->table('conges c')
+            ->select('count(*) as totalDem ,types_conges.libelle as typeName')
+            ->join('types_conges', 'c.id_type_conge = types_conges.id', 'left')
+            ->where('c.id_employe', $idemployes)
+            ->groupBy('types_conges.id')
+            ->get()
+            ->getResultArray();
+        }
+    public function getNombreDemandeParMois($annee, $mois) {
+        return $this->db->table('conges c')
+        ->select('count(*) as total')
+        ->where("strftime('%Y-%m', date_debut)", "$annee-$mois")
+        ->get()
+        ->getResultArray();
+    }
 }

@@ -17,6 +17,7 @@ $soldes = $soldes ?? [];
 $demandes = $demandes ?? [];
 $totalAttribues = $totalAttribues ?? 0;
 $totalRestant = $totalRestant ?? 0;
+$totalDemande = $totalDemande ?? 0;
 ?>
 <div class="app-wrap">
 
@@ -75,6 +76,18 @@ $totalRestant = $totalRestant ?? 0;
           <div class="metric-label">Refusée</div>
         </div>
       </div>
+
+      <!-- Total Demande Congés -->
+ <div class="metrics">
+  <?php foreach($totalDemande as $demande){ ?>
+
+        <div class="metric">
+          <div class="metric-top"><div class="metric-icon mi-amber"><i class="bi bi-hourglass-split"></i></div></div>
+          <div class="metric-val"><?= esc($demande['totalDem']) ?></div>
+          <div class="metric-label"><?= esc($demande['typeName']) ?></div>
+        </div>
+   <?php } ?>
+  </div>
 
       <!-- Soldes de congés -->
       <div class="data-card">

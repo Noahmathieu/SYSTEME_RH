@@ -44,12 +44,16 @@ class employeController extends BaseController
 
         $recentDemandes = array_slice($demandes, 0, 5);
 
+        $totalDemande = $modelConge->getDemandeByTypeConges($idEmploye);
+        
+
         return view('employe/dashboard', [
             'soldes' => $soldes,
             'demandes' => $recentDemandes,
             'stats' => $stats,
             'totalAttribues' => $totalAttribues,
             'totalRestant' => $totalRestant,
+            'totalDemande' => $totalDemande,
         ]);
     }
 
@@ -178,4 +182,16 @@ class employeController extends BaseController
     {
         return redirect()->to('/employe/dashboard');
     }     
+    public function calendrier()
+    {
+       $idEmploye = $this->resolveEmployeId();
+        if (!$idEmploye) {
+            return redirect()->to('/login');
+        }
+
+        $congeModel = new CongeModel();
+        $conges = $congeModel->getCongesByEmployeWithType($idEmploye);
+
+        return view('employe/calendar', ['conges' => $conges]);
+    }
 }

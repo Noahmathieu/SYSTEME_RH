@@ -13,6 +13,11 @@
           <span class="nav-badge alert">2</span>
         </a>
       </li>
+       <li>
+        <a href="<?= base_url('employe/calendrier') ?>" class="<?= (current_url() == base_url('employe/calendrier')) ? 'active' : '' ?>">
+          <i class="bi bi-calendar3"></i> Mon calendrier
+        </a>
+      </li>
       <li><a href="#page-profil-employe"><i class="bi bi-person"></i> Mon profil</a></li>
     </ul>
     <div class="sidebar-user">

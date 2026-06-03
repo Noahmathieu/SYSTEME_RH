@@ -9,5 +9,4 @@ class EmployeModel extends Model
     protected $allowedFields = ['nom', 'prenom', 'email', 'password', 'id_role', 'id_departement', 'date_embauche', 'actif'];
     protected $useTimestamps = false;
 
-
 }

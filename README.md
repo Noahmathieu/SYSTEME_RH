@@ -6,3 +6,4 @@ Alors quand vous entrer a chaque login reconnait le role et il vous redirige ver
 Admin : Email :admin@local.com //password: admin
 RH: rh@techmada.mg // password: rh123
 Employee: employe@techmada.mg // password 'emp123'
+

@@ -32,8 +32,13 @@ class AdminController extends BaseController
         $demandesEnAttente = $this->congeModel->where('statut', 'en_attente')->countAllResults();
         $demandesApprouvees = $this->congeModel->where('statut', 'approuve')->countAllResults();
         $departements = $this->departementModel->countAllResults();
-
         $recentDemandes = $this->congeModel->getCongesWithSoldes([], 5);
+
+        $nombreDemande = [];
+        for ($i = 1; $i <= 12; $i++) {
+            $result = $this->congeModel->getNombreDemandeParMois(date('Y'), sprintf('%02d', $i));
+            $nombreDemande[] = !empty($result) ? $result[0]['total'] : 0;
+        }
 
         return view('admin/dashboard', [
             'metrics' => [
@@ -43,6 +48,7 @@ class AdminController extends BaseController
                 'departements' => $departements,
                 'absents' => 0,
             ],
+            'nombreDemande' => $nombreDemande,
             'recentDemandes' => $recentDemandes,
         ]);
     }

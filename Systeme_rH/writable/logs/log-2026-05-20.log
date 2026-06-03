@@ -1,0 +1,248 @@
+CRITICAL - 2026-05-20 07:01:17 --> CodeIgniter\View\Exceptions\ViewException: Invalid file: "employe/calendrier.php"
+[Method: GET, Route: employe/calendrier]
+in SYSTEMPATH/Exceptions/FrameworkException.php on line 39.
+ 1 SYSTEMPATH/View/View.php(228): CodeIgniter\Exceptions\FrameworkException::forInvalidFile()
+ 2 SYSTEMPATH/Common.php(1250): CodeIgniter\View\View->render()
+ 3 APPPATH/Controllers/employeController.php(191): view()
+ 4 SYSTEMPATH/CodeIgniter.php(951): App\Controllers\employeController->calendrier()
+ 5 SYSTEMPATH/CodeIgniter.php(497): CodeIgniter\CodeIgniter->runController()
+ 6 SYSTEMPATH/CodeIgniter.php(340): CodeIgniter\CodeIgniter->handleRequest()
+ 7 SYSTEMPATH/Boot.php(417): CodeIgniter\CodeIgniter->run()
+ 8 SYSTEMPATH/Boot.php(68): CodeIgniter\Boot::runCodeIgniter()
+ 9 FCPATH/index.php(59): CodeIgniter\Boot::bootWeb()
+10 SYSTEMPATH/rewrite.php(44): require_once('/home/noah/Documents/GitHub/SYSTEME_RH/Systeme_rH/public/index.php')
+CRITICAL - 2026-05-20 07:11:14 --> ErrorException: A non-numeric value encountered
+[Method: GET, Route: employe/calendrier]
+in APPPATH/Views/employe/calendar.php on line 82.
+ 1 APPPATH/Views/employe/calendar.php(82): CodeIgniter\Debug\Exceptions->errorHandler()
+ 2 SYSTEMPATH/View/View.php(240): include('/home/noah/Documents/GitHub/SYSTEME_RH/Systeme_rH/app/Views/employe/calendar.php')
+ 3 SYSTEMPATH/View/View.php(243): CodeIgniter\View\View->CodeIgniter\View\{closure}()
+ 4 SYSTEMPATH/Common.php(1250): CodeIgniter\View\View->render()
+ 5 APPPATH/Controllers/employeController.php(191): view()
+ 6 SYSTEMPATH/CodeIgniter.php(951): App\Controllers\employeController->calendrier()
+ 7 SYSTEMPATH/CodeIgniter.php(497): CodeIgniter\CodeIgniter->runController()
+ 8 SYSTEMPATH/CodeIgniter.php(340): CodeIgniter\CodeIgniter->handleRequest()
+ 9 SYSTEMPATH/Boot.php(417): CodeIgniter\CodeIgniter->run()
+10 SYSTEMPATH/Boot.php(68): CodeIgniter\Boot::runCodeIgniter()
+11 FCPATH/index.php(59): CodeIgniter\Boot::bootWeb()
+12 SYSTEMPATH/rewrite.php(44): require_once('/home/noah/Documents/GitHub/SYSTEME_RH/Systeme_rH/public/index.php')
+CRITICAL - 2026-05-20 07:11:17 --> ErrorException: A non-numeric value encountered
+[Method: GET, Route: employe/calendrier]
+in APPPATH/Views/employe/calendar.php on line 82.
+ 1 APPPATH/Views/employe/calendar.php(82): CodeIgniter\Debug\Exceptions->errorHandler()
+ 2 SYSTEMPATH/View/View.php(240): include('/home/noah/Documents/GitHub/SYSTEME_RH/Systeme_rH/app/Views/employe/calendar.php')
+ 3 SYSTEMPATH/View/View.php(243): CodeIgniter\View\View->CodeIgniter\View\{closure}()
+ 4 SYSTEMPATH/Common.php(1250): CodeIgniter\View\View->render()
+ 5 APPPATH/Controllers/employeController.php(191): view()
+ 6 SYSTEMPATH/CodeIgniter.php(951): App\Controllers\employeController->calendrier()
+ 7 SYSTEMPATH/CodeIgniter.php(497): CodeIgniter\CodeIgniter->runController()
+ 8 SYSTEMPATH/CodeIgniter.php(340): CodeIgniter\CodeIgniter->handleRequest()
+ 9 SYSTEMPATH/Boot.php(417): CodeIgniter\CodeIgniter->run()
+10 SYSTEMPATH/Boot.php(68): CodeIgniter\Boot::runCodeIgniter()
+11 FCPATH/index.php(59): CodeIgniter\Boot::bootWeb()
+12 SYSTEMPATH/rewrite.php(44): require_once('/home/noah/Documents/GitHub/SYSTEME_RH/Systeme_rH/public/index.php')
+CRITICAL - 2026-05-20 08:18:40 --> ParseError: syntax error, unexpected token ":"
+[Method: GET, Route: employe/dashboard]
+in APPPATH/Views/employe/dashboard.php on line 83.
+ 1 SYSTEMPATH/View/View.php(243): CodeIgniter\View\View->CodeIgniter\View\{closure}()
+ 2 SYSTEMPATH/Common.php(1250): CodeIgniter\View\View->render()
+ 3 APPPATH/Controllers/employeController.php(50): view()
+ 4 SYSTEMPATH/CodeIgniter.php(951): App\Controllers\employeController->dashboard()
+ 5 SYSTEMPATH/CodeIgniter.php(497): CodeIgniter\CodeIgniter->runController()
+ 6 SYSTEMPATH/CodeIgniter.php(340): CodeIgniter\CodeIgniter->handleRequest()
+ 7 SYSTEMPATH/Boot.php(417): CodeIgniter\CodeIgniter->run()
+ 8 SYSTEMPATH/Boot.php(68): CodeIgniter\Boot::runCodeIgniter()
+ 9 FCPATH/index.php(59): CodeIgniter\Boot::bootWeb()
+10 SYSTEMPATH/rewrite.php(44): require_once('/home/noah/Documents/GitHub/SYSTEME_RH/Systeme_rH/public/index.php')
+ERROR - 2026-05-20 14:31:23 --> Unable to prepare statement: no such function: srtftime
+in SYSTEMPATH/Database/SQLite3/Connection.php on line 164.
+ 1 SYSTEMPATH/Database/SQLite3/Connection.php(164): SQLite3->query()
+ 2 SYSTEMPATH/Database/BaseConnection.php(910): CodeIgniter\Database\SQLite3\Connection->execute()
+ 3 SYSTEMPATH/Database/BaseConnection.php(827): CodeIgniter\Database\BaseConnection->simpleQuery()
+ 4 SYSTEMPATH/Database/BaseBuilder.php(1649): CodeIgniter\Database\BaseConnection->query()
+ 5 APPPATH/Models/CongeModel.php(80): CodeIgniter\Database\BaseBuilder->get()
+ 6 APPPATH/Controllers/AdminController.php(39): App\Models\CongeModel->getNombreDemandeParMois()
+ 7 SYSTEMPATH/CodeIgniter.php(951): App\Controllers\AdminController->dashboard()
+ 8 SYSTEMPATH/CodeIgniter.php(497): CodeIgniter\CodeIgniter->runController()
+ 9 SYSTEMPATH/CodeIgniter.php(340): CodeIgniter\CodeIgniter->handleRequest()
+10 SYSTEMPATH/Boot.php(417): CodeIgniter\CodeIgniter->run()
+11 SYSTEMPATH/Boot.php(68): CodeIgniter\Boot::runCodeIgniter()
+12 FCPATH/index.php(59): CodeIgniter\Boot::bootWeb()
+13 SYSTEMPATH/rewrite.php(44): require_once('/home/noah/Documents/GitHub/SYSTEME_RH/Systeme_rH/public/index.php')
+CRITICAL - 2026-05-20 14:31:23 --> CodeIgniter\Database\Exceptions\DatabaseException: Unable to prepare statement: no such function: srtftime
+[Method: GET, Route: admin/dashboard]
+in SYSTEMPATH/Database/BaseConnection.php on line 865.
+ 1 SYSTEMPATH/Database/BaseBuilder.php(1649): CodeIgniter\Database\BaseConnection->query()
+ 2 APPPATH/Models/CongeModel.php(80): CodeIgniter\Database\BaseBuilder->get()
+ 3 APPPATH/Controllers/AdminController.php(39): App\Models\CongeModel->getNombreDemandeParMois()
+ 4 SYSTEMPATH/CodeIgniter.php(951): App\Controllers\AdminController->dashboard()
+ 5 SYSTEMPATH/CodeIgniter.php(497): CodeIgniter\CodeIgniter->runController()
+ 6 SYSTEMPATH/CodeIgniter.php(340): CodeIgniter\CodeIgniter->handleRequest()
+ 7 SYSTEMPATH/Boot.php(417): CodeIgniter\CodeIgniter->run()
+ 8 SYSTEMPATH/Boot.php(68): CodeIgniter\Boot::runCodeIgniter()
+ 9 FCPATH/index.php(59): CodeIgniter\Boot::bootWeb()
+10 SYSTEMPATH/rewrite.php(44): require_once('/home/noah/Documents/GitHub/SYSTEME_RH/Systeme_rH/public/index.php')
+CRITICAL - 2026-05-20 14:31:23 --> [Caused by] CodeIgniter\Database\Exceptions\DatabaseException: Unable to prepare statement: no such function: srtftime
+in SYSTEMPATH/Database/SQLite3/Connection.php on line 174.
+ 1 SYSTEMPATH/Database/BaseConnection.php(910): CodeIgniter\Database\SQLite3\Connection->execute()
+ 2 SYSTEMPATH/Database/BaseConnection.php(827): CodeIgniter\Database\BaseConnection->simpleQuery()
+ 3 SYSTEMPATH/Database/BaseBuilder.php(1649): CodeIgniter\Database\BaseConnection->query()
+ 4 APPPATH/Models/CongeModel.php(80): CodeIgniter\Database\BaseBuilder->get()
+ 5 APPPATH/Controllers/AdminController.php(39): App\Models\CongeModel->getNombreDemandeParMois()
+ 6 SYSTEMPATH/CodeIgniter.php(951): App\Controllers\AdminController->dashboard()
+ 7 SYSTEMPATH/CodeIgniter.php(497): CodeIgniter\CodeIgniter->runController()
+ 8 SYSTEMPATH/CodeIgniter.php(340): CodeIgniter\CodeIgniter->handleRequest()
+ 9 SYSTEMPATH/Boot.php(417): CodeIgniter\CodeIgniter->run()
+10 SYSTEMPATH/Boot.php(68): CodeIgniter\Boot::runCodeIgniter()
+11 FCPATH/index.php(59): CodeIgniter\Boot::bootWeb()
+12 SYSTEMPATH/rewrite.php(44): require_once('/home/noah/Documents/GitHub/SYSTEME_RH/Systeme_rH/public/index.php')
+CRITICAL - 2026-05-20 14:31:23 --> [Caused by] SQLite3Exception: Unable to prepare statement: no such function: srtftime
+in SYSTEMPATH/Database/SQLite3/Connection.php on line 164.
+ 1 SYSTEMPATH/Database/SQLite3/Connection.php(164): SQLite3->query()
+ 2 SYSTEMPATH/Database/BaseConnection.php(910): CodeIgniter\Database\SQLite3\Connection->execute()
+ 3 SYSTEMPATH/Database/BaseConnection.php(827): CodeIgniter\Database\BaseConnection->simpleQuery()
+ 4 SYSTEMPATH/Database/BaseBuilder.php(1649): CodeIgniter\Database\BaseConnection->query()
+ 5 APPPATH/Models/CongeModel.php(80): CodeIgniter\Database\BaseBuilder->get()
+ 6 APPPATH/Controllers/AdminController.php(39): App\Models\CongeModel->getNombreDemandeParMois()
+ 7 SYSTEMPATH/CodeIgniter.php(951): App\Controllers\AdminController->dashboard()
+ 8 SYSTEMPATH/CodeIgniter.php(497): CodeIgniter\CodeIgniter->runController()
+ 9 SYSTEMPATH/CodeIgniter.php(340): CodeIgniter\CodeIgniter->handleRequest()
+10 SYSTEMPATH/Boot.php(417): CodeIgniter\CodeIgniter->run()
+11 SYSTEMPATH/Boot.php(68): CodeIgniter\Boot::runCodeIgniter()
+12 FCPATH/index.php(59): CodeIgniter\Boot::bootWeb()
+13 SYSTEMPATH/rewrite.php(44): require_once('/home/noah/Documents/GitHub/SYSTEME_RH/Systeme_rH/public/index.php')
+CRITICAL - 2026-05-20 14:49:34 --> ErrorException: Array to string conversion
+[Method: GET, Route: admin/dashboard]
+in APPPATH/Views/admin/dashboard.php on line 89.
+ 1 APPPATH/Views/admin/dashboard.php(89): CodeIgniter\Debug\Exceptions->errorHandler()
+ 2 SYSTEMPATH/View/View.php(240): include('/home/noah/Documents/GitHub/SYSTEME_RH/Systeme_rH/app/Views/admin/dashboard.php')
+ 3 SYSTEMPATH/View/View.php(243): CodeIgniter\View\View->CodeIgniter\View\{closure}()
+ 4 SYSTEMPATH/Common.php(1250): CodeIgniter\View\View->render()
+ 5 APPPATH/Controllers/AdminController.php(42): view()
+ 6 SYSTEMPATH/CodeIgniter.php(951): App\Controllers\AdminController->dashboard()
+ 7 SYSTEMPATH/CodeIgniter.php(497): CodeIgniter\CodeIgniter->runController()
+ 8 SYSTEMPATH/CodeIgniter.php(340): CodeIgniter\CodeIgniter->handleRequest()
+ 9 SYSTEMPATH/Boot.php(417): CodeIgniter\CodeIgniter->run()
+10 SYSTEMPATH/Boot.php(68): CodeIgniter\Boot::runCodeIgniter()
+11 FCPATH/index.php(59): CodeIgniter\Boot::bootWeb()
+12 SYSTEMPATH/rewrite.php(44): require_once('/home/noah/Documents/GitHub/SYSTEME_RH/Systeme_rH/public/index.php')
+CRITICAL - 2026-05-20 14:49:37 --> ErrorException: Array to string conversion
+[Method: GET, Route: admin/dashboard]
+in APPPATH/Views/admin/dashboard.php on line 89.
+ 1 APPPATH/Views/admin/dashboard.php(89): CodeIgniter\Debug\Exceptions->errorHandler()
+ 2 SYSTEMPATH/View/View.php(240): include('/home/noah/Documents/GitHub/SYSTEME_RH/Systeme_rH/app/Views/admin/dashboard.php')
+ 3 SYSTEMPATH/View/View.php(243): CodeIgniter\View\View->CodeIgniter\View\{closure}()
+ 4 SYSTEMPATH/Common.php(1250): CodeIgniter\View\View->render()
+ 5 APPPATH/Controllers/AdminController.php(42): view()
+ 6 SYSTEMPATH/CodeIgniter.php(951): App\Controllers\AdminController->dashboard()
+ 7 SYSTEMPATH/CodeIgniter.php(497): CodeIgniter\CodeIgniter->runController()
+ 8 SYSTEMPATH/CodeIgniter.php(340): CodeIgniter\CodeIgniter->handleRequest()
+ 9 SYSTEMPATH/Boot.php(417): CodeIgniter\CodeIgniter->run()
+10 SYSTEMPATH/Boot.php(68): CodeIgniter\Boot::runCodeIgniter()
+11 FCPATH/index.php(59): CodeIgniter\Boot::bootWeb()
+12 SYSTEMPATH/rewrite.php(44): require_once('/home/noah/Documents/GitHub/SYSTEME_RH/Systeme_rH/public/index.php')
+CRITICAL - 2026-05-20 14:52:20 --> ErrorException: Array to string conversion
+[Method: GET, Route: admin/dashboard]
+in APPPATH/Views/admin/dashboard.php on line 89.
+ 1 APPPATH/Views/admin/dashboard.php(89): CodeIgniter\Debug\Exceptions->errorHandler()
+ 2 SYSTEMPATH/View/View.php(240): include('/home/noah/Documents/GitHub/SYSTEME_RH/Systeme_rH/app/Views/admin/dashboard.php')
+ 3 SYSTEMPATH/View/View.php(243): CodeIgniter\View\View->CodeIgniter\View\{closure}()
+ 4 SYSTEMPATH/Common.php(1250): CodeIgniter\View\View->render()
+ 5 APPPATH/Controllers/AdminController.php(42): view()
+ 6 SYSTEMPATH/CodeIgniter.php(951): App\Controllers\AdminController->dashboard()
+ 7 SYSTEMPATH/CodeIgniter.php(497): CodeIgniter\CodeIgniter->runController()
+ 8 SYSTEMPATH/CodeIgniter.php(340): CodeIgniter\CodeIgniter->handleRequest()
+ 9 SYSTEMPATH/Boot.php(417): CodeIgniter\CodeIgniter->run()
+10 SYSTEMPATH/Boot.php(68): CodeIgniter\Boot::runCodeIgniter()
+11 FCPATH/index.php(59): CodeIgniter\Boot::bootWeb()
+12 SYSTEMPATH/rewrite.php(44): require_once('/home/noah/Documents/GitHub/SYSTEME_RH/Systeme_rH/public/index.php')
+CRITICAL - 2026-05-20 14:52:22 --> ErrorException: Array to string conversion
+[Method: GET, Route: admin/dashboard]
+in APPPATH/Views/admin/dashboard.php on line 89.
+ 1 APPPATH/Views/admin/dashboard.php(89): CodeIgniter\Debug\Exceptions->errorHandler()
+ 2 SYSTEMPATH/View/View.php(240): include('/home/noah/Documents/GitHub/SYSTEME_RH/Systeme_rH/app/Views/admin/dashboard.php')
+ 3 SYSTEMPATH/View/View.php(243): CodeIgniter\View\View->CodeIgniter\View\{closure}()
+ 4 SYSTEMPATH/Common.php(1250): CodeIgniter\View\View->render()
+ 5 APPPATH/Controllers/AdminController.php(42): view()
+ 6 SYSTEMPATH/CodeIgniter.php(951): App\Controllers\AdminController->dashboard()
+ 7 SYSTEMPATH/CodeIgniter.php(497): CodeIgniter\CodeIgniter->runController()
+ 8 SYSTEMPATH/CodeIgniter.php(340): CodeIgniter\CodeIgniter->handleRequest()
+ 9 SYSTEMPATH/Boot.php(417): CodeIgniter\CodeIgniter->run()
+10 SYSTEMPATH/Boot.php(68): CodeIgniter\Boot::runCodeIgniter()
+11 FCPATH/index.php(59): CodeIgniter\Boot::bootWeb()
+12 SYSTEMPATH/rewrite.php(44): require_once('/home/noah/Documents/GitHub/SYSTEME_RH/Systeme_rH/public/index.php')
+CRITICAL - 2026-05-20 14:52:23 --> ErrorException: Array to string conversion
+[Method: GET, Route: admin/dashboard]
+in APPPATH/Views/admin/dashboard.php on line 89.
+ 1 APPPATH/Views/admin/dashboard.php(89): CodeIgniter\Debug\Exceptions->errorHandler()
+ 2 SYSTEMPATH/View/View.php(240): include('/home/noah/Documents/GitHub/SYSTEME_RH/Systeme_rH/app/Views/admin/dashboard.php')
+ 3 SYSTEMPATH/View/View.php(243): CodeIgniter\View\View->CodeIgniter\View\{closure}()
+ 4 SYSTEMPATH/Common.php(1250): CodeIgniter\View\View->render()
+ 5 APPPATH/Controllers/AdminController.php(42): view()
+ 6 SYSTEMPATH/CodeIgniter.php(951): App\Controllers\AdminController->dashboard()
+ 7 SYSTEMPATH/CodeIgniter.php(497): CodeIgniter\CodeIgniter->runController()
+ 8 SYSTEMPATH/CodeIgniter.php(340): CodeIgniter\CodeIgniter->handleRequest()
+ 9 SYSTEMPATH/Boot.php(417): CodeIgniter\CodeIgniter->run()
+10 SYSTEMPATH/Boot.php(68): CodeIgniter\Boot::runCodeIgniter()
+11 FCPATH/index.php(59): CodeIgniter\Boot::bootWeb()
+12 SYSTEMPATH/rewrite.php(44): require_once('/home/noah/Documents/GitHub/SYSTEME_RH/Systeme_rH/public/index.php')
+CRITICAL - 2026-05-20 14:52:23 --> ErrorException: Array to string conversion
+[Method: GET, Route: admin/dashboard]
+in APPPATH/Views/admin/dashboard.php on line 89.
+ 1 APPPATH/Views/admin/dashboard.php(89): CodeIgniter\Debug\Exceptions->errorHandler()
+ 2 SYSTEMPATH/View/View.php(240): include('/home/noah/Documents/GitHub/SYSTEME_RH/Systeme_rH/app/Views/admin/dashboard.php')
+ 3 SYSTEMPATH/View/View.php(243): CodeIgniter\View\View->CodeIgniter\View\{closure}()
+ 4 SYSTEMPATH/Common.php(1250): CodeIgniter\View\View->render()
+ 5 APPPATH/Controllers/AdminController.php(42): view()
+ 6 SYSTEMPATH/CodeIgniter.php(951): App\Controllers\AdminController->dashboard()
+ 7 SYSTEMPATH/CodeIgniter.php(497): CodeIgniter\CodeIgniter->runController()
+ 8 SYSTEMPATH/CodeIgniter.php(340): CodeIgniter\CodeIgniter->handleRequest()
+ 9 SYSTEMPATH/Boot.php(417): CodeIgniter\CodeIgniter->run()
+10 SYSTEMPATH/Boot.php(68): CodeIgniter\Boot::runCodeIgniter()
+11 FCPATH/index.php(59): CodeIgniter\Boot::bootWeb()
+12 SYSTEMPATH/rewrite.php(44): require_once('/home/noah/Documents/GitHub/SYSTEME_RH/Systeme_rH/public/index.php')
+CRITICAL - 2026-05-20 15:06:12 --> ErrorException: Undefined variable $nombreDemande
+[Method: GET, Route: admin/dashboard]
+in APPPATH/Views/admin/dashboard.php on line 86.
+ 1 APPPATH/Views/admin/dashboard.php(86): CodeIgniter\Debug\Exceptions->errorHandler()
+ 2 SYSTEMPATH/View/View.php(240): include('/home/noah/Documents/GitHub/SYSTEME_RH/Systeme_rH/app/Views/admin/dashboard.php')
+ 3 SYSTEMPATH/View/View.php(243): CodeIgniter\View\View->CodeIgniter\View\{closure}()
+ 4 SYSTEMPATH/Common.php(1250): CodeIgniter\View\View->render()
+ 5 APPPATH/Controllers/AdminController.php(42): view()
+ 6 SYSTEMPATH/CodeIgniter.php(951): App\Controllers\AdminController->dashboard()
+ 7 SYSTEMPATH/CodeIgniter.php(497): CodeIgniter\CodeIgniter->runController()
+ 8 SYSTEMPATH/CodeIgniter.php(340): CodeIgniter\CodeIgniter->handleRequest()
+ 9 SYSTEMPATH/Boot.php(417): CodeIgniter\CodeIgniter->run()
+10 SYSTEMPATH/Boot.php(68): CodeIgniter\Boot::runCodeIgniter()
+11 FCPATH/index.php(59): CodeIgniter\Boot::bootWeb()
+12 SYSTEMPATH/rewrite.php(44): require_once('/home/noah/Documents/GitHub/SYSTEME_RH/Systeme_rH/public/index.php')
+CRITICAL - 2026-05-20 15:06:13 --> ErrorException: Undefined variable $nombreDemande
+[Method: GET, Route: admin/dashboard]
+in APPPATH/Views/admin/dashboard.php on line 86.
+ 1 APPPATH/Views/admin/dashboard.php(86): CodeIgniter\Debug\Exceptions->errorHandler()
+ 2 SYSTEMPATH/View/View.php(240): include('/home/noah/Documents/GitHub/SYSTEME_RH/Systeme_rH/app/Views/admin/dashboard.php')
+ 3 SYSTEMPATH/View/View.php(243): CodeIgniter\View\View->CodeIgniter\View\{closure}()
+ 4 SYSTEMPATH/Common.php(1250): CodeIgniter\View\View->render()
+ 5 APPPATH/Controllers/AdminController.php(42): view()
+ 6 SYSTEMPATH/CodeIgniter.php(951): App\Controllers\AdminController->dashboard()
+ 7 SYSTEMPATH/CodeIgniter.php(497): CodeIgniter\CodeIgniter->runController()
+ 8 SYSTEMPATH/CodeIgniter.php(340): CodeIgniter\CodeIgniter->handleRequest()
+ 9 SYSTEMPATH/Boot.php(417): CodeIgniter\CodeIgniter->run()
+10 SYSTEMPATH/Boot.php(68): CodeIgniter\Boot::runCodeIgniter()
+11 FCPATH/index.php(59): CodeIgniter\Boot::bootWeb()
+12 SYSTEMPATH/rewrite.php(44): require_once('/home/noah/Documents/GitHub/SYSTEME_RH/Systeme_rH/public/index.php')
+CRITICAL - 2026-05-20 15:06:14 --> ErrorException: Undefined variable $nombreDemande
+[Method: GET, Route: admin/dashboard]
+in APPPATH/Views/admin/dashboard.php on line 86.
+ 1 APPPATH/Views/admin/dashboard.php(86): CodeIgniter\Debug\Exceptions->errorHandler()
+ 2 SYSTEMPATH/View/View.php(240): include('/home/noah/Documents/GitHub/SYSTEME_RH/Systeme_rH/app/Views/admin/dashboard.php')
+ 3 SYSTEMPATH/View/View.php(243): CodeIgniter\View\View->CodeIgniter\View\{closure}()
+ 4 SYSTEMPATH/Common.php(1250): CodeIgniter\View\View->render()
+ 5 APPPATH/Controllers/AdminController.php(42): view()
+ 6 SYSTEMPATH/CodeIgniter.php(951): App\Controllers\AdminController->dashboard()
+ 7 SYSTEMPATH/CodeIgniter.php(497): CodeIgniter\CodeIgniter->runController()
+ 8 SYSTEMPATH/CodeIgniter.php(340): CodeIgniter\CodeIgniter->handleRequest()
+ 9 SYSTEMPATH/Boot.php(417): CodeIgniter\CodeIgniter->run()
+10 SYSTEMPATH/Boot.php(68): CodeIgniter\Boot::runCodeIgniter()
+11 FCPATH/index.php(59): CodeIgniter\Boot::bootWeb()
+12 SYSTEMPATH/rewrite.php(44): require_once('/home/noah/Documents/GitHub/SYSTEME_RH/Systeme_rH/public/index.php')
